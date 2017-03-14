@@ -1,9 +1,9 @@
-Package: Ibasam
+Package: MetaIBASAM
 Type: Package
 Title: Individual Based Atlantic Salmon Model  
-Version: 2.3.1
-Date: 2016-03-14
-Author: Cyril Piou & Julien Papaix & Mathieu Buoro
+Version: O
+Date: 2017-03-14
+Author: Cyril Piou & Mathieu Buoro
 Maintainer: Cyril Piou <piou.cyril@yahoo.fr>
 Description: Functions wrapping the IBM of Salmo salar
 License: GPL2

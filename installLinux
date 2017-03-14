@@ -1,0 +1,3 @@
+gedit MetaIBASAM/src/Makevars
+R CMD build Ibasam
+sudo R CMD INSTALL MetaIBASAM_v0.tar.gz
