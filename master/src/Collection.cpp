@@ -1046,19 +1046,32 @@ vectorSalmon Collection::fishing(double *fishParam)
 
 void Collection::emmigrants(const char* filenameExport, double* probStray){
 	ofstream logfile(filenameExport,ios::app);
+  
+  double Strayrate1SW = probStray[0];
+  double StrayrateMSW = probStray[1];
 	double stray;
-	for(unsigned i=0; i<size();++i)
+	for (unsigned i=0; i<size();++i)
 	{
 		if(at(i).condition(salmontoreturn))
 		{
+		  if(at(i).AgeSea()<1.5)
+		  {
 			stray=runif(0.,1.);
-			if(stray<*probStray)
+			if(stray<Strayrate1SW)
 			{
 				logfile<<(at(i));
 				at(i).die();
 			}
-		}
-	}	
+		  }else
+		    stray=runif(0.,1.);
+		    if(stray<StrayrateMSW)
+		    {
+		      logfile<<(at(i));
+		      at(i).die();
+		    }
+		  }
+	}
+}		
 	removedead();
 }
 
