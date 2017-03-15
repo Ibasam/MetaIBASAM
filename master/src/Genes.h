@@ -47,6 +47,12 @@ public:
 			 double gSalphaS_mean, double gSalphaS_sd);
 
 	Genes(Genes *mother, Genes *father);
+	Genes(Genemap gPercF, Genemap gG, Genemap gG_sea, Genemap gMocean_intercept,
+			Genemap gMocean_f_intercept, Genemap gMriver_intercept, Genemap gMriver_f_intercept_,
+			Genemap gSLmid_, Genemap gSalphaS_,	Genemap neutral_, 
+			unsigned ID, unsigned motherID, unsigned fatherID, 
+			double motherStrat, double fatherStrat, double age_river, double age_sea, 
+			unsigned nb_transmitted);
 	void updateID(unsigned ID);
 	unsigned ID()const{return ID_;};
 	double gPercF(){return invlogit(gPercF_.expression());};

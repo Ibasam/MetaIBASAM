@@ -322,6 +322,11 @@ extern "C" {
 	{
 		FishedCollec.observe(allind);
 	}
+	
+	void emmigrants(char** filenameExport, double* probStray)
+	{
+		MyCollec.emmigrants(*filenameExport,probStray);
+	}
 
 	/*************************************************************
 	 * 															 *

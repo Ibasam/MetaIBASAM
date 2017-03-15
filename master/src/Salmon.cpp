@@ -26,6 +26,7 @@
 #include "Salmon.h"
 #include "rand.h"
 
+ 
 using namespace std;
 
 static unsigned IDs = 0;
@@ -590,4 +591,5 @@ std::ostream& operator<<(std::ostream& os, Salmon& a)
 	os << endl;
 	return os;
 }
+
 

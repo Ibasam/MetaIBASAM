@@ -1040,6 +1040,28 @@ vectorSalmon Collection::fishing(double *fishParam)
 	return fishedColl;
 }
 
+/************************
+ * Straying
+ ************************/
+
+void Collection::emmigrants(const char* filenameExport, double* probStray){
+	ofstream logfile(filenameExport,ios::app);
+	double stray;
+	for(unsigned i=0; i<size();++i)
+	{
+		if(at(i).condition(salmontoreturn))
+		{
+			stray=runif(0.,1.);
+			if(stray<*probStray)
+			{
+				logfile<<(at(i));
+				at(i).die();
+			}
+		}
+	}	
+	removedead();
+}
+
 
 /************************
  * Observation

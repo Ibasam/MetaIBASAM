@@ -99,6 +99,8 @@ public:
 	void check_autumn_maturation_ocean();
 	void check_spring_maturation_river();
 	void reinitialize_salmon_maturation();
+	
+	void emmigrants(const char* filenameExport, double* probStray);
 
 
 private:

@@ -87,6 +87,33 @@ Genes::Genes(Genes *mother, Genes *father)
 	fatherStrat_=father->strategy();//floor(father->AgeSea()) + floor(father->AgeRiver())*0.1;
 }
 
+Genes::Genes(Genemap gPercF, Genemap gG, Genemap gG_sea, Genemap gMocean_intercept,
+			Genemap gMocean_f_intercept, Genemap gMriver_intercept, Genemap gMriver_f_intercept,
+			Genemap gSLmid, Genemap gSalphaS,	Genemap neutral, 
+			unsigned ID, unsigned motherID, unsigned fatherID, 
+			double motherStrat, double fatherStrat, double age_river, double age_sea, 
+			unsigned nb_transmitted)
+{
+	gPercF_=gPercF;
+	gG_=gG;
+	gG_sea_=gG_sea;
+	gMocean_intercept_=gMocean_intercept;
+	gMocean_f_intercept_=gMocean_f_intercept;
+	gMriver_intercept_=gMriver_intercept;
+	gMriver_f_intercept_=gMriver_f_intercept;
+	gSLmid_=gSLmid;
+	gSalphaS_=gSalphaS;
+	neutral_=neutral;
+	ID_=ID;
+	motherID_=motherID;
+	fatherID_=fatherID;
+	motherStrat_=motherStrat;
+	fatherStrat_=fatherStrat;
+	age_river_=age_river;
+	age_sea_=age_sea;
+	nb_transmitted_=nb_transmitted;
+}
+
 double Genes::strategy()
 {
 	return (floor(age_sea_) + floor(age_river_)*0.1);
