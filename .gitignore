@@ -8,7 +8,7 @@
 /master.Rcheck
 /master/src-i386
 /master/src-x64
-
+/R/*txt
 
 # Backup files #
 ################
