@@ -17,6 +17,7 @@
     Prepare_environment_vectors(mm$temperatures, mm$logrelflow)
     setup_environment_parameters(def$envParam)
     setup_collection_parameters(def$colParam)
+    set_collecID(55)
     time_tick(90)
     add_individuals(def$gParam)
     add_individuals(def$parrParam)
@@ -50,12 +51,14 @@
         autumn()
         winter()
         popa <- observe()
+        emmigrants(paste0("test",y,".txt"),0.1)
+        #immigrants("nom de fichier")
         if (fisheries) {
             rates <- cbind(grilses = rep(fishing_rate[1], nYears), 
                 msw = rep(fishing_rate[2], nYears))
             fishing(rates[y, ])
         }
-        emmigrants(paste0("test",y,".txt"),0.1)
+        
         if (returning || success) {
             results <- rbind(results, popa)
         }
