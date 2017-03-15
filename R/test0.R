@@ -58,7 +58,7 @@
         autumn()
         winter()
         popa <- observe()
-        emmigrants(paste0("test",y,".txt"),0.1)
+        emmigrants(paste0("test",y,".txt"),c(0.1,0.1))
         #immigrants("nom de fichier")
 
         
