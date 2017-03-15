@@ -42,6 +42,13 @@
         ptm <- proc.time()
         spring()
         summer()
+        
+        if (fisheries) {
+            rates <- cbind(grilses = rep(fishing_rate[1], nYears), 
+                msw = rep(fishing_rate[2], nYears))
+            fishing(rates[y, ])
+        }        
+        
         popo <- observe()
         if (returning || success) {
             results <- rbind(results, popo)
@@ -53,11 +60,7 @@
         popa <- observe()
         emmigrants(paste0("test",y,".txt"),0.1)
         #immigrants("nom de fichier")
-        if (fisheries) {
-            rates <- cbind(grilses = rep(fishing_rate[1], nYears), 
-                msw = rep(fishing_rate[2], nYears))
-            fishing(rates[y, ])
-        }
+
         
         if (returning || success) {
             results <- rbind(results, popa)
