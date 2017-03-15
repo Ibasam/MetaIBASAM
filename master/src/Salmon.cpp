@@ -589,6 +589,7 @@ std::ostream& operator<<(std::ostream& os, Salmon& a)
 	os << a.Nreprod_thisyear()<<'\t';
 	os << a.Nreprod()<<'\t';
 	os << endl;
+	os << a.genesOut();
 	return os;
 }
 

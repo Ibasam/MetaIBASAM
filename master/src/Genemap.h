@@ -43,6 +43,8 @@ public:
 	double heritability() const{return heritability_;};
 	double mean() const{return mean_;};
 	double sd() const{return sd_;};
+	dbitset br1o() const{return br1;};
+	dbitset br2o() const{return br2;};
 
 private:
 	void initialize_lims();
@@ -54,4 +56,7 @@ private:
 };
 
 Genemap reproduction(Genemap *mother, Genemap* father);
+
+std::ostream& operator<<(std::ostream& os, Genemap& gm);
+
 #endif /* GENEMAP_H_ */

@@ -77,6 +77,7 @@ public:
 
 	double gNeutral(){return neutral_.standardized_value();};
 	virtual ~Genes();
+	
 protected:
 	Genemap gPercF_;
 	Genemap gG_;
@@ -88,6 +89,7 @@ protected:
 	Genemap gSLmid_;
 	Genemap gSalphaS_;
 	Genemap neutral_;
+	
 /*info from individuals to restitute at repro*/
 	unsigned ID_,motherID_,fatherID_;
 	double motherStrat_,fatherStrat_;
@@ -103,6 +105,8 @@ public:
 	double fatherStrat() const{return fatherStrat_;};
 	unsigned nb_transmitted() const{return nb_transmitted_;};
 	void updateGene(double age_river, double age_sea,unsigned nb_transmitted);
+	
+	friend std::ostream& operator<<(std::ostream& os, Genes& g);
 };
 
 

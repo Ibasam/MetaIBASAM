@@ -158,3 +158,8 @@ Genemap reproduction(Genemap *mother, Genemap* father)
 		return Genemap(mother->mean(),mother->sd());
 }
 
+std::ostream& operator<<(std::ostream& os, Genemap& gm)
+{
+	os<<gm.br1o()<<'\t'<<gm.br2o()<<'\t'<<gm.heritability()<<'\t'<<gm.mean()<<'\t'<<gm.sd()<<endl;
+	return(os);
+}

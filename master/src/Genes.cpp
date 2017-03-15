@@ -157,3 +157,10 @@ Genes::Genes(double gPercF_mean, double gPercF_sd,
 	motherStrat_=0;
 	fatherStrat_=0;
 }
+
+
+std::ostream& operator<<(std::ostream& os, Genes& g)
+{
+	os<<g.gPercF_<<g.gG_<<g.gG_sea_<<g.gMocean_intercept_<<g.gMocean_f_intercept_<<g.gMriver_intercept_<<g.gMriver_f_intercept_<<g.gSLmid_<<g.gSalphaS_<<g.neutral_;
+	return(os);
+}

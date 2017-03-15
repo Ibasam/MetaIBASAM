@@ -55,7 +55,7 @@
                 msw = rep(fishing_rate[2], nYears))
             fishing(rates[y, ])
         }
-        emmigrants("test.txt",0.1)
+        emmigrants(paste0("test",y,".txt"),0.1)
         if (returning || success) {
             results <- rbind(results, popa)
         }
@@ -64,6 +64,7 @@
         sptm <- rbind(sptm, proc.time() - ptm)
     }
     if (plotting) {
+        pdf('test0.pdf')
         op <- par(mfrow = c(2, 2))
         plot_proportions_population(ratios, window = window)
         plot_winterM(winterM, window = window)
@@ -80,12 +81,7 @@
             ylab = "seconds", xlab = "years", bty = "l", sub = paste("Total:", 
                 round(sum(sptm[, 1]), 3)))
         lines(lowess(sptm[, 1]), col = 2, lty = 2)
-        par(op)
-    }
-
-    pdf('test0.pdf')
-    plot_proportions_population(ratios, window = window)
-        plot_winterM(winterM, window = window)
-        plot_summerM(summerM, window = window)
-        plotevolution(ally, window = window)
+        par(op)  
         dev.off()
+    }
+        

@@ -137,7 +137,7 @@ public:
 
 	double mass_repro()const{return Neggs_*Mean_egg_W_;}
 	double SpecificGR()const{return specific_growth_river_;}
-
+	Genes& genesOut(){return myGenes_;};
 private:
 
 	/* State variables */
