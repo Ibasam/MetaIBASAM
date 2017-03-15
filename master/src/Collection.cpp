@@ -24,6 +24,8 @@
 #include <math.h>
 #include <iostream> //for the ID of unavailable males... to remove later
 #include <fstream>
+#include <stdlib.h>
+#include <string.h>
 #include "Collection.h"
 #include "rand.h"
 

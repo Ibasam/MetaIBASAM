@@ -101,7 +101,7 @@ public:
 	void reinitialize_salmon_maturation();
 	
 	void emmigrants(const char* filenameExport, double* probStray);
-
+	void immigrants(const char* filenameImport);
 
 private:
 	/****************************
