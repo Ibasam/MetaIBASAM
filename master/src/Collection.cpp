@@ -1062,7 +1062,7 @@ void Collection::emmigrants(const char* filenameExport, double* probStray){
 				logfile<<(at(i));
 				at(i).die();
 			}
-		  }else
+		  }else{
 		    stray=runif(0.,1.);
 		    if(stray<StrayrateMSW)
 		    {
@@ -1070,11 +1070,59 @@ void Collection::emmigrants(const char* filenameExport, double* probStray){
 		      at(i).die();
 		    }
 		  }
+		}
 	}
-}		
+		
 	removedead();
 }
 
+
+void Collection::immigrants(const char* filenameImport){
+	ifstream in(filenameImport); // Open for reading
+	string line;
+	unsigned nb_salmons=0;
+	char * cstr, *p;
+	double temp[50];
+	unsigned line1s,t;
+	string emptystr (" ");
+	cstr = new char [emptystr.size()+1]; //to avoid warning messages
+	line1s=0;
+	while(getline(in, line))
+	{
+		cstr = new char [line.size()+1];
+		strcpy (cstr, line.c_str());
+		p=strtok (cstr," \t");
+		t=0;
+		while (p!=NULL)
+		{
+			temp[t]= atof(p);
+			p=strtok(NULL," \t");
+			++t;
+		}
+		/*days.push_back(temp[0]);
+		temperatures.push_back(temp[1]);
+		logRelativeFlows.push_back(temp[2]);*/
+		++line1s;
+		if(line1s == 1)
+		{
+			// general info salmon individual
+		}else{
+			if(line1s <= 11){
+				// genetic info individual
+				if(line1s == 11){
+					// create individual and push_back
+					line1s = 0;
+				}	
+			}
+		}
+	}
+	delete[] cstr;
+	delete[] p;
+
+	//close file!!
+	in.close();
+	
+}
 
 /************************
  * Observation
