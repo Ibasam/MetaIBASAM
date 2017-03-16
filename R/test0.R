@@ -59,6 +59,7 @@
         winter()
         popa <- observe()
         emmigrants(paste0("test",y,".txt"),c(0.1,0.1))
+        # pause("nom de fichier") # R script to pause the execution of Ibasam until immigrant file (e.g. mig_AtoB) is created in a specific folder
         #immigrants("nom de fichier")
 
         
