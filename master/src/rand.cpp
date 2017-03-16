@@ -31,11 +31,9 @@ boost::mt19937 rng(static_cast<unsigned int> (time(0)));
 boost::uniform_int<> prob(0, 8);
 boost::variate_generator<boost::mt19937&, boost::uniform_int<> > rnd(rng, prob);
 boost::uniform_real<> probr(0, 1);
-boost::variate_generator<boost::mt19937&, boost::uniform_real<> > rndv(rng,
-		probr);
-boost::normal_distribution<> norm;
-boost::variate_generator<boost::mt19937&, boost::normal_distribution<> >
-		rnormal(rng, norm);
+boost::variate_generator<boost::mt19937&, boost::uniform_real<> > rndv(rng, probr);
+boost::normal_distribution<> normi;
+boost::variate_generator<boost::mt19937&, boost::normal_distribution<> > rnormal(rng, normi);
 boost::bernoulli_distribution<> bern;
 boost::variate_generator<boost::mt19937&, boost::bernoulli_distribution<> > rbern(rng, bern);
 

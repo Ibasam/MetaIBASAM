@@ -9,6 +9,7 @@
 /master/src-i386
 /master/src-x64
 /R/*txt
+/binary/
 
 # Backup files #
 ################
@@ -27,6 +28,7 @@
 *.ods
 *.xls
 *.xlsx
+*.txt
 
 # images
 *.jpg
@@ -56,6 +58,12 @@
 *.RData
 *.Rdata
 *.Rproj
+
+# eclipse project config#
+#########################
+.cproject
+.project
+/.settings/
 
 # Compiled source #
 ###################
@@ -99,3 +107,4 @@ Thumbs.db
 # Optional things
 *.sublime-project
 *.sublime-workspace
+/Debug/
