@@ -1081,49 +1081,129 @@ void Collection::emmigrants(const char* filenameExport, double* probStray){
 
 void Collection::immigrants(const char* filenameImport){
 	ifstream in(filenameImport); // Open for reading
+
+	//variables for information handling:
 	string line;
 	unsigned nb_salmons=0;
 	char * cstr, *p;
 	double temp[50];
-	unsigned line1s,t;
+	unsigned line1s,genemapIndex,t;
 	string emptystr (" ");
 	cstr = new char [emptystr.size()+1]; //to avoid warning messages
 	line1s=0;
+	genemapIndex=0;
+
+	//variables for salmon creation:
+	double inputVar [11];//[6+18+6+6];
+	bool inputVar2 [5];
+	unsigned inputVar3 [3];
+	Genes genes;
+	Genemap iGenemaps [10];
+
 	while(getline(in, line))
 	{
-		cstr = new char [line.size()+1];
-		strcpy (cstr, line.c_str());
-		p=strtok (cstr," \t");
-		t=0;
-		while (p!=NULL)
-		{
-			temp[t]= atof(p);
-			p=strtok(NULL," \t");
-			++t;
-		}
-		/*days.push_back(temp[0]);
-		temperatures.push_back(temp[1]);
-		logRelativeFlows.push_back(temp[2]);*/
-		++line1s;
-		if(line1s == 1)
-		{
-			// general info salmon individual
-		}else{
-			if(line1s <= 11){
+			cstr = new char [line.size()+1];
+			strcpy (cstr, line.c_str());
+			p=strtok (cstr," \t");
+
+			++line1s;
+			if(line1s == 1)
+			{
+				// general info salmon individual
+				t=0;
+				while (p!=NULL)
+				{
+					temp[t]= atof(p);
+					p=strtok(NULL," \t");
+					++t;
+				}
+				//cout<< "salmon id: " << static_cast<unsigned>(temp[10])<<endl;
+				inputVar[0]=temp[1];//W
+				inputVar[1]=temp[2];//F
+
+				inputVar2[0]= (temp[5]==1.);//female //TODO: verify equality
+				inputVar2[1]= (temp[6]==1.);//parr
+				inputVar2[2]= (temp[7]==1.);//mature
+				inputVar2[3]= (temp[8]==1.);//at_sea
+				inputVar2[4]= (temp[9]==1.);//smolt
+
+				inputVar[2]=temp[14];//date
+				inputVar[3]=temp[15];//year
+				inputVar[4] = (inputVar2[0]) ? MaturationPercF_[1]  : MaturationPercF_[0] ;//MaturationPercF
+
+				inputVar[5]=temp[3];//ageRiver
+				inputVar[6]=temp[4];//ageSea
+				inputVar[7]=temp[3]*365 + temp[4]*365 ;//ageDays //TODO:retrouve age in days?
+				inputVar[8]=temp[18];//specific_growth_river
+				inputVar[9]=temp[17];//Wini
+				//mother & father ID & strat for genes...
+				inputVar3[0]=static_cast<unsigned>(temp[19]);
+				inputVar3[1]=static_cast<unsigned>(temp[20]);
+				inputVar[10]=temp[40];
+				inputVar[11]=temp[41];
+				inputVar3[2]=static_cast<unsigned>(temp[43]);//nb reproduced
+				genemapIndex=0;
+			}else{
 				// genetic info individual
+				t=0;
+				while (p!=NULL)
+				{
+					temp[t]= atof(p);
+					p=strtok(NULL," \t");
+					++t;
+				}
+				if(temp[0]==0.){
+					/*cout<< "salmon h2: " << temp[0]<<endl;
+					cout<< "salmon mean: " << temp[1]<<endl;
+					cout<< "salmon sd: " << temp[2]<<endl;*/
+
+					iGenemaps[genemapIndex] = Genemap(temp[1],temp[2]);
+
+				}else{
+					std::string s = line;
+					std::string delimiter = "\t";
+					dbitset db [2];
+					size_t pos = 0;
+					std::string token;
+					unsigned i = 0;
+					while ((pos = s.find(delimiter)) != std::string::npos  && i<2) {
+					    token = s.substr(0, pos);
+					    populateBitSet(token,db[i]);
+					    s.erase(0, pos + delimiter.length());
+					    ++i;
+					}
+
+					/*cout<< "salmon gene br1: " << db[0]<<endl;
+					cout<< "salmon gene br2: " << db[1]<<endl;
+					cout<< "salmon h2: " << temp[2]<<endl;
+					cout<< "salmon mean: " << temp[3]<<endl;
+					cout<< "salmon sd: " << temp[4]<<endl;*/
+
+					iGenemaps[genemapIndex]=Genemap(db[0],db[1],temp[2],temp[3],temp[4]);
+				}
+				++genemapIndex;
 				if(line1s == 11){
+					genes=Genes(iGenemaps[0],iGenemaps[1],iGenemaps[2],iGenemaps[3],iGenemaps[4],
+								iGenemaps[5],iGenemaps[6],iGenemaps[7],iGenemaps[8],iGenemaps[9],
+								0,inputVar3[0],inputVar3[1],inputVar[10],inputVar[11],inputVar[5],inputVar[6],inputVar3[2]);
 					// create individual and push_back
+					Salmon o(inputVar[0],inputVar[1],lwa_,lwb_,lwa_sea_,lwb_sea_,inputVar2[0],inputVar2[1],inputVar2[2],inputVar2[3],inputVar2[4],
+									b_allom_, smolt1_activity_, winterLMG_activity_,smoltN_activity_,inputVar[2],inputVar[3],inputVar[4],
+									Sp0_, Sp1_, Sp1S_, Sp1M_, SpnM_, Spn_,  RickA_,  RickB_, K_, Wmax_, gPercFm_,
+									CollecID_, inputVar[5],inputVar[6],inputVar[7],inputVar[8],inputVar[9], genes,
+									maxRIV_,sigRIV_,kappaRIV_,maxSEA_,sigSEA_,kappaSEA_);	 //create the animal
+					push_back(o);
 					line1s = 0;
-				}	
+					++nb_salmons;
+					//cout<<"\t"<<endl;
+				}
 			}
 		}
-	}
-	delete[] cstr;
-	delete[] p;
+		delete[] cstr;
+		delete[] p;
 
-	//close file!!
-	in.close();
-	
+		//close file!!
+		in.close();
 }
 
 /************************

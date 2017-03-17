@@ -57,6 +57,8 @@ private:
 
 Genemap reproduction(Genemap *mother, Genemap* father);
 
+void populateBitSet (std::string &buffer, dbitset & bitMap);
+
 std::ostream& operator<<(std::ostream& os, Genemap& gm);
 
 #endif /* GENEMAP_H_ */
