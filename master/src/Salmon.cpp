@@ -593,4 +593,19 @@ std::ostream& operator<<(std::ostream& os, Salmon& a)
 	return os;
 }
 
-
+void Salmon::fix_inputs(double * inputs){
+	L_=inputs[0];
+	DW_=inputs[1];
+	returns_=inputs[2];
+	P_survival_=inputs[3];
+	gPercF_=inputs[4];
+	pG_=inputs[5];
+	pG_sea_=inputs[6];
+	pPercF_=inputs[7];
+	pSLmid_=inputs[8];
+	palphaS_=inputs[9];
+	pFmid_[0]=inputs[10];
+	pFmid_[1]=inputs[11];
+	pFmid_[2]=inputs[12];
+	pFmid_[3]=inputs[13];
+}

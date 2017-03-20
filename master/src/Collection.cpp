@@ -1100,6 +1100,8 @@ void Collection::immigrants(const char* filenameImport){
 	Genes genes;
 	Genemap iGenemaps [10];
 
+	double fix_inputs[14];
+
 	while(getline(in, line))
 	{
 			cstr = new char [line.size()+1];
@@ -1121,7 +1123,7 @@ void Collection::immigrants(const char* filenameImport){
 				inputVar[0]=temp[1];//W
 				inputVar[1]=temp[2];//F
 
-				inputVar2[0]= (temp[5]==1.);//female //TODO: verify equality
+				inputVar2[0]= (temp[5]==1.);//female
 				inputVar2[1]= (temp[6]==1.);//parr
 				inputVar2[2]= (temp[7]==1.);//mature
 				inputVar2[3]= (temp[8]==1.);//at_sea
@@ -1143,6 +1145,22 @@ void Collection::immigrants(const char* filenameImport){
 				inputVar[11]=temp[41];
 				inputVar3[2]=static_cast<unsigned>(temp[43]);//nb reproduced
 				genemapIndex=0;
+
+				fix_inputs[0]=temp[0];//Lf
+				fix_inputs[1]=temp[11];//DW
+				fix_inputs[2]=temp[12];//returns
+				fix_inputs[3]=temp[13];//Psurvival
+				fix_inputs[4]=temp[23];//gPercF
+				fix_inputs[5]=temp[24];//pG
+				fix_inputs[6]=temp[25];//pG_sea
+				fix_inputs[7]=temp[26];//pPercF
+				fix_inputs[8]=temp[29];//pSLmid
+				fix_inputs[9]=temp[30];//palphaS
+				fix_inputs[10]=temp[32];//pFmid[1]
+				fix_inputs[11]=temp[34];//pFmid[2]
+				fix_inputs[12]=temp[36];//pFmid[3]
+				fix_inputs[13]=temp[38];//pFmid[4]
+
 			}else{
 				// genetic info individual
 				t=0;
@@ -1192,6 +1210,7 @@ void Collection::immigrants(const char* filenameImport){
 									Sp0_, Sp1_, Sp1S_, Sp1M_, SpnM_, Spn_,  RickA_,  RickB_, K_, Wmax_, gPercFm_,
 									CollecID_, inputVar[5],inputVar[6],inputVar[7],inputVar[8],inputVar[9], genes,
 									maxRIV_,sigRIV_,kappaRIV_,maxSEA_,sigSEA_,kappaSEA_);	 //create the animal
+					o.fix_inputs(fix_inputs);
 					push_back(o);
 					line1s = 0;
 					++nb_salmons;

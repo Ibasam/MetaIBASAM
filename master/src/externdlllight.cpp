@@ -328,6 +328,11 @@ extern "C" {
 		MyCollec.emmigrants(*filenameExport,probStray);
 	}
 	
+	void immigrants(char** filenameExport)
+	{
+		MyCollec.immigrants(*filenameExport);
+	}
+
 	void set_collecID(long * newID)
 	{
 		MyCollec.set_collecID(static_cast<unsigned> (*newID));
