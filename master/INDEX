@@ -63,6 +63,7 @@ newwindow               newwindow
 observe                 observe
 observe_redds           observe_redds
 observe_redds_details   observe_redds_details
+pause                   pause
 panel.cor               panel.cor
 panel.cor.plot          panel.cor.plot
 panel.hist              panel.hist
