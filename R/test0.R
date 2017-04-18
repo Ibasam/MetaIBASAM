@@ -1,4 +1,11 @@
   library(Ibasam)
+  
+  ##First read in the arguments listed at the command line
+  args=(commandArgs(TRUE))
+  
+  # Popualtion of origin: Pop.o
+  # Number of popualtions: npop
+  
   CC_Temp=0
   CC_Amp=0
   fisheries = TRUE
@@ -58,20 +65,44 @@
         autumn()
         winter()
         popa <- observe()
-        emmigrants(paste0("test",y,".txt"),c(0.1,0.1))
+        
+        # STRAYING
+        #emmigrants("nom de fichier", straying_rates for 1SW & MSW)
+        #pause("nom de fichier")
+        #immigrants("nom de fichier")
+        # emmigrants(paste0("tmp/Pop_",Pop,"_",y,".txt"),c(0.1,0.1))
+        # popb <- observe()
+        # pause(paste0("tmp/Pop_",Pop_im,"_",y,".txt")) # R script to pause the execution of Ibasam until immigrant file (e.g. mig_AtoB) is created in a specific folder
+        # immigrants(paste0("tmp/Pop_",Pop_im,"_",y,".txt"))
+        # popc <- observe()
+        
+        for (Pop.e in 1:npop){
+          # Pop.o: population of origin
+          # Pop.e: emigrate to population Pop.e
+          if(Pop.e == Pop.o) { 
+            next 
+            } else {
+          emfile <- paste("tmp/Mig_",Pop.o,"-",Pop.e,"_",y,".txt",sep="")
+          pstray <- c(0.1,0.1)
+          emmigrants(emfile,pstray)
+          } # end if
+        } # end Pop.e
+        
         popb <- observe()
-        # pause("nom de fichier") # R script to pause the execution of Ibasam until immigrant file (e.g. mig_AtoB) is created in a specific folder
-<<<<<<< Updated upstream
-        immigrants(paste0("test",y,".txt"))
+        
+        for (Pop.i in 1:npop){
+          # Pop.o: population of origin
+          # Pop.i: immigrate from population Pop.i
+          if(Pop.i == Pop.o) { 
+            next 
+          } else {
+          imfile <- paste("tmp/Mig_",Pop.i,"-",Pop.o,"_",y,".txt",sep="")
+          pause(imfile) # R script to pause the execution of Ibasam until immigrant file (e.g. mig_AtoB) is created in a specific folder
+          immigrants(imfile)
+          } # end if
+        } # end Pop.i
+
         popc <- observe()
-||||||| ancestor
-        #immigrants("nom de fichier")
-
-=======
-        pause("test_A.txt")
-        #immigrants("nom de fichier")
-
->>>>>>> Stashed changes
         
         if (returning || success) {
             results <- rbind(results, popa)
