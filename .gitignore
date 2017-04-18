@@ -30,6 +30,7 @@
 *.xls
 *.xlsx
 *.txt
+*.out
 
 # images
 *.jpg
