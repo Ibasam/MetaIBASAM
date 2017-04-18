@@ -21,11 +21,3 @@ mkdir -p tmp/
 R CMD BATCH --no-save --no-restore --slave R/rIBASAM_$pop.R R/rIBASAM_$pop.out &
 
 done
-
-## Cleaning
-# for pop in $(seq 1 $npop)
-# do
-# rm -f R/test0_$pop.R
-# done
-
-# rm -f *.txt
