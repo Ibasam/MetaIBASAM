@@ -112,7 +112,7 @@
         sptm <- rbind(sptm, proc.time() - ptm)
     }
     if (plotting) {
-        pdf('tmp/test0.pdf')
+        pdf(paste('tmp/Res_Pop',Pop.o,'.pdf',sep=''))
         op <- par(mfrow = c(2, 2))
         plot_proportions_population(ratios, window = window)
         plot_winterM(winterM, window = window)
