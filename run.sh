@@ -3,15 +3,29 @@
 
 
 npop=3
-
+nyears=10
 
 for pop in $(seq 1 $npop)
 do
 
-cp R/test0.R R/test0_$pop.R
-sed 's|npop|'"$npop"'|g' -i R/test0_$pop.R
-sed 's|Pop.o|'"$pop"'|g' -i R/test0_$pop.R
+# Create R script for each populations
+cp R/rIBASAM.R R/rIBASAM_$pop.R
+sed 's|npop|'"$npop"'|g' -i R/rIBASAM_$pop.R
+sed 's|Pop.o|'"$pop"'|g' -i R/rIBASAM_$pop.R
+sed 's|nYears|'"$nyears"'|g' -i R/rIBASAM_$pop.R
 
-R CMD BATCH --no-save --no-restore --slave R/test0_$pop.R test$pop.out &
+# Create temporary folder (needed to put migrants files)
+mkdir -p tmp/
+
+# Run analysis
+R CMD BATCH --no-save --no-restore --slave R/rIBASAM_$pop.R R/rIBASAM_$pop.out &
 
 done
+
+## Cleaning
+# for pop in $(seq 1 $npop)
+# do
+# rm -f R/test0_$pop.R
+# done
+
+# rm -f *.txt
