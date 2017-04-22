@@ -1,3 +1,5 @@
+.gitignore
+
 # Folders #
 ###########
 /results
@@ -8,9 +10,10 @@
 /master.Rcheck
 /master/src-i386
 /master/src-x64
-/R/*txt
+/R
 /binary/
 /script_parallel.R
+/tmp
 
 # Backup files #
 ################
