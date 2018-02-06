@@ -6,6 +6,9 @@
   # Popualtion of origin: Pop.o
   # Number of popualtions: npop
   
+  ## Load straying scenario
+  load("R/straying.RData")
+  
   CC_Temp=0
   CC_Amp=0
   fisheries = TRUE
@@ -18,7 +21,7 @@
        # nYears=10
   empty()
     def <- defaultParameters()
-    def$envParam[9] <- 200811 *0.1      #attention grosse pop
+    def$envParam[9] <- 200811*0.1      #attention grosse pop
     mm <- river_climate_model(nYears + 1, CC_Temp, CC_Amp)
     Reset_environment()
     Prepare_environment_vectors(mm$temperatures, mm$logrelflow)
@@ -50,23 +53,7 @@
         spring()
         summer()
         
-        if (fisheries) {
-            rates <- cbind(grilses = rep(fishing_rate[1], nYears), 
-                msw = rep(fishing_rate[2], nYears))
-            fishing(rates[y, ])
-        }        
-        
-        popo <- observe()
-        if (returning || success) {
-            results <- rbind(results, popo)
-        }
-        ratios[y, ] <- unlist(proportions.population(popo))
-        summerM[y, ] <- unlist(important.indicator.summer.population(popo))
-        autumn()
-        winter()
-        popa <- observe()
-        
-        # STRAYING
+        #### STRAYING ####
         #emmigrants("nom de fichier", straying_rates for 1SW & MSW)
         #pause("nom de fichier")
         #immigrants("nom de fichier")
@@ -81,14 +68,12 @@
           # Pop.e: emigrate to population Pop.e
           if(Pop.e == Pop.o) { 
             next 
-            } else {
-          emfile <- paste("tmp/Mig_",Pop.o,"-",Pop.e,"_",y,".txt",sep="")
-          pstray <- c(0.1,0.1)
-          emmigrants(emfile,pstray)
+          } else {
+            emfile <- paste("tmp/Mig_",Pop.o,"-",Pop.e,"_",y,".txt",sep="")
+            pstray <- c(0.1,0.1)
+            emmigrants(emfile,pstray)
           } # end if
         } # end Pop.e
-        
-        popb <- observe()
         
         for (Pop.i in 1:npop){
           # Pop.o: population of origin
@@ -96,14 +81,36 @@
           if(Pop.i == Pop.o) { 
             next 
           } else {
-          imfile <- paste("tmp/Mig_",Pop.i,"-",Pop.o,"_",y,".txt",sep="")
-          pause(imfile) # R script to pause the execution of Ibasam until immigrant file (e.g. mig_AtoB) is created in a specific folder
-          immigrants(imfile)
+            imfile <- paste("tmp/Mig_",Pop.i,"-",Pop.o,"_",y,".txt",sep="")
+            pause(imfile) # R script to pause the execution of Ibasam until immigrant file (e.g. mig_AtoB) is created in a specific folder
+            immigrants(imfile)
           } # end if
         } # end Pop.i
-
-        popc <- observe()
         
+        # pope <- observe()
+        # if (returning || success) {
+        #   results <- rbind(results, pope)
+        # }
+        
+        
+        #### FISHING ####
+        if (fisheries) {
+            rates <- cbind(grilses = rep(fishing_rate[1], nYears), 
+                msw = rep(fishing_rate[2], nYears))
+            fishing(rates[y, ])
+        }        
+        
+        popo <- observe()
+        if (returning || success) {
+            results <- rbind(results, popo)
+        }
+        
+        ratios[y, ] <- unlist(proportions.population(popo))
+        summerM[y, ] <- unlist(important.indicator.summer.population(popo))
+        autumn()
+        winter()
+        
+        popa <- observe()
         if (returning || success) {
             results <- rbind(results, popa)
         }
