@@ -86,11 +86,11 @@
 # git has its own built in compression methods
 *.7z
 *.dmg
-*.gz
+#*.gz
 *.iso
 *.jar
 *.rar
-*.tar
+#*.tar
 *.zip
 
 # Logs and databases #
