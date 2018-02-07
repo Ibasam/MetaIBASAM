@@ -12,7 +12,7 @@
 /master/src-x64
 /binary/
 /script_parallel.R
-/tmp
+/R/tmp/*
 
 # Backup files #
 ################

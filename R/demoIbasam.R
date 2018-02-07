@@ -1,16 +1,43 @@
 demoIbasam <-
-  function (nInit,nYears
-            , CC.Temp, CC.Amp
-            , CC.Sea
-            , fisheries = TRUE, stage = TRUE, fishing_rate=c(.15, .15, .15)
-            , plotting = FALSE, window = FALSE, returning = TRUE, success = FALSE, empty = TRUE) 
+  function (nInit
+            ,nYears
+            , npop # Number of popualtions
+            , Pop.o # Popualtion of origin
+            , rPROP
+            , pstray 
+            , CC.Temp
+            , CC.Amp # effects of climate change in freshwater
+            , CC.Sea # effects of climate change at sea
+            , fisheries = TRUE, stage = TRUE, fishing_rate=c(.15, .15, .15) ## fishing effects
+            , plotting = TRUE, window = FALSE, returning = TRUE, success = FALSE, empty = TRUE
+            ) 
   {
     
     #Initialization & Preparation:
     empty()
     def <- defaultParameters()
     
-    #on change les param?tres environnementaux et d'?mergence
+   #### PARAMETERS ####
+    # If maxRIV <0 or maxSEA <0, NO trade-offs
+    kappaRIV=0.001
+    kappaSEA=0.001
+    
+    heriRIV=0.14
+    heriSEA=0.14
+    
+    maxSEA=50
+    sigSEA=100
+    
+    maxRIV=5
+    sigRIV=3.7
+    
+    SP0=0.9841606*1.005
+    SP1=0.9914398*1.005
+    SP1S=0.9967923*1.002
+    SP1M=0.9863295*1.002
+    SPnM=0.9911798*1.002
+    SPn=0.99775*1.002
+    
     def$envParam[9] <- 200811*rPROP#1/10 du scorff
     def$gParam[1] <- round(def$envParam[9]*8*0.15)
     def$parrParam[1] <- round(def$gParam[1]*0.011)
@@ -27,32 +54,12 @@ demoIbasam <-
     #survies
     def$colParam[13:18] <- c(SP0,SP1,SP1S,SP1M,SPnM,SPn) #daily survival prob parr 0 to 0.5; daily survival prob parr 0.5 to 1.0; daily survival prob smolts 0.5 to run; daily survival prob parr mature 0.5 to 1.0; daily survival prob parr mature n.5 to n+1; daily survival prob parr any other situations
     
-    ## ENVIRONMENT:
-    mm <- river_climate_model(nInit, nYears + 1, CC.Temp, CC.Amp)
+    #### ENVIRONMENT ####
+    mm <- river_climate_model(nInit + nYears + 1, CC.Temp, CC.Amp)
     Reset_environment()
     Prepare_environment_vectors(mm$temperatures, mm$logrelflow)
     setup_environment_parameters(def$envParam)
     setup_collection_parameters(def$colParam)
-    
-    
-    time_tick(90)
-    add_individuals(def$gParam)
-    add_individuals(def$parrParam)
-    add_individuals(def$smoltsParam)
-    go_summer()
-    popo <- observe()
-    add_individuals(def$grilseParam)
-    add_individuals(def$mswParam)
-    go_winter()
-    popa <- observe()
-    if (returning || success) {
-      results <- observe()
-    }
-    ratios <- matrix(NA, nrow = nInit+nYears, ncol = 4)
-    winterM <- matrix(NA, nrow = nInit+nYears, ncol = 6)
-    summerM <- matrix(NA, nrow = nInit+nYears, ncol = 18)
-    ally <- summarize.oneyear(popo, popa)
-    sptm <- NULL
     
     # Oceanic growth conditions:
     MeanNoiseSea <- c(rep(1,nInit),seq(1,CC.Sea,length=nYears))
@@ -74,6 +81,28 @@ demoIbasam <-
       }
     }
     
+    #### INITIALIZING POPULATION ####
+    time_tick(90)
+    add_individuals(def$gParam)
+    add_individuals(def$parrParam)
+    add_individuals(def$smoltsParam)
+    go_summer()
+    popo <- observe()
+    add_individuals(def$grilseParam)
+    add_individuals(def$mswParam)
+    go_winter()
+    popa <- observe()
+    if (returning || success) {
+      results <- observe()
+    }
+    ratios <- matrix(NA, nrow = nInit+nYears, ncol = 4)
+    winterM <- matrix(NA, nrow = nInit+nYears, ncol = 6)
+    summerM <- matrix(NA, nrow = nInit+nYears, ncol = 18)
+    ally <- summarize.oneyear(popo, popa)
+    sptm <- NULL
+    
+    
+    ## RUN
     pb   <- txtProgressBar(1, nYears+nInit, style=3) # initilazing progress bar
     for (y in 1:(nYears+nInit)) {
       #cat("Year: ",y,"of ",nYears, "\n")
@@ -86,14 +115,58 @@ demoIbasam <-
       ptm <- proc.time()
       spring()
       summer()
+      
+      #### STRAYING ####
+      #emmigrants("nom de fichier", straying_rates for 1SW & MSW)
+      #pause("nom de fichier")
+      #immigrants("nom de fichier")
+      # emmigrants(paste0("tmp/Pop_",Pop,"_",y,".txt"),c(0.1,0.1))
+      # popb <- observe()
+      # pause(paste0("tmp/Pop_",Pop_im,"_",y,".txt")) # R script to pause the execution of Ibasam until immigrant file (e.g. mig_AtoB) is created in a specific folder
+      # immigrants(paste0("tmp/Pop_",Pop_im,"_",y,".txt"))
+      # popc <- observe()
+      
+      for (Pop.e in 1:npop){
+        # Pop.o: population of origin
+        # Pop.e: emigrate to population Pop.e
+        if(Pop.e == Pop.o) { 
+          next 
+        } else {
+          emfile <- paste("tmp/Mig_",Pop.o,"-",Pop.e,"_",y,".txt",sep="")
+          #pstray <- c(0.1,0.1)
+          emmigrants(emfile,pstray)
+        } # end if
+      } # end Pop.e
+      
+      for (Pop.i in 1:npop){
+        # Pop.o: population of origin
+        # Pop.i: immigrate from population Pop.i
+        if(Pop.i == Pop.o) { 
+          next 
+        } else {
+          imfile <- paste("tmp/Mig_",Pop.i,"-",Pop.o,"_",y,".txt",sep="")
+          pause(imfile) # R script to pause the execution of Ibasam until immigrant file (e.g. mig_AtoB) is created in a specific folder
+          immigrants(imfile)
+        } # end if
+      } # end Pop.i
+      
+      # pope <- observe()
+      # if (returning || success) {
+      #   results <- rbind(results, pope)
+      # }
       popo <- observe() # state BEFORE fisheries
+      
+      
+      #### FISHING ####
       if (fisheries) {
         fishing(rates[y,])
       }
+      
       # popo <- observe() # state AFTER fisheries        
       if (returning || success) {
         results <- rbind(results, popo)
       }
+      
       ratios[y, ] <- unlist(proportions.population(popo))
       summerM[y, ] <- unlist(important.indicator.summer.population(popo))
       
@@ -107,7 +180,10 @@ demoIbasam <-
       ally <- append.oneyear(popo, popa, ally)
       sptm <- rbind(sptm, proc.time() - ptm)
     }
+    
+    #### PLOT ####
     if (plotting) {
+      pdf(paste('tmp/Res_Pop',Pop.o,'.pdf',sep=''))
       op <- par(mfrow = c(2, 2))
       plot_proportions_population(ratios, window = window)
       plot_winterM(winterM, window = window)
@@ -125,10 +201,11 @@ demoIbasam <-
                                                                     round(sum(sptm[, 1]), 3)))
       lines(lowess(sptm[, 1]), col = 2, lty = 2)
       par(op)
+      dev.off()
     }
     if (returning) {
-      return(list(results,mm))
-      #return(results)
+      #return(list(results,mm))
+      return(results)
     }
     else {
       invisible(NULL)
