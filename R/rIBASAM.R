@@ -7,7 +7,7 @@
   # Number of popualtions: npop
   
   ## Load straying scenario
-  load("R/straying.RData")
+  #load("straying.RData")
   
   CC_Temp=0
   CC_Amp=0
@@ -21,7 +21,7 @@
        # nYears=10
   empty()
     def <- defaultParameters()
-    def$envParam[9] <- 200811*0.1      #attention grosse pop
+    def$envParam[9] <- 200811*0.1      # to adjust / population
     mm <- river_climate_model(nYears + 1, CC_Temp, CC_Amp)
     Reset_environment()
     Prepare_environment_vectors(mm$temperatures, mm$logrelflow)
