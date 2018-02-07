@@ -139,4 +139,9 @@
         par(op)  
         dev.off()
     }
+    
+    if (returning) {
+      return(results)
+      
+    }
         
