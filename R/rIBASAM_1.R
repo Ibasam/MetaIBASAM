@@ -7,7 +7,7 @@
   # Number of popualtions: 4
   
   ## Load straying scenario
-  load("R/straying.RData")
+  #load("straying.RData")
   
   CC_Temp=0
   CC_Amp=0
