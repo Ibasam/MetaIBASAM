@@ -13,10 +13,10 @@
 
 # Parameters:
 npop=4
-nSIMUL=nsim # Nb simulations
+#nSIMUL=nsim # Nb simulations
 Init=5 # Nb years to initialized
 Years=10 # Nb years simulated
-rPROP=0.1 # proportion (popualtion size)
+rPROP=0.2 # proportion (popualtion size)
 
 # Environmental conditions:
 Temp=0 # Water Temperature (T° increase / Years; keep constant if 0)
@@ -46,32 +46,31 @@ stage=TRUE # fishing on life stages (1SW/MSW) if TRUE, on Sizes ("small","med","
 for pop in $(seq 1 $npop)
 do
 
-cp scriptR.R scriptR_$pop.R
+cp R/scriptR.R R/scriptR_$pop.R
 # sed 's|rPROP|'"$rPROP"'|g' -i scriptR_TMP.ssc
 
-sed 's|init|'"$Init"'|g' -i scriptR_$pop.R
-sed 's|years|'"$Years"'|' -i scriptR_$pop.R
+sed 's|init|'"$Init"'|g' -i R/scriptR_$pop.R
+sed 's|years|'"$Years"'|' -i R/scriptR_$pop.R
 
-sed 's|npop|'"$npop"'|g' -i scriptR_$pop.R # Number of popualtions
-sed 's|popo|'"$pop"'|' -i scriptR_$pop.R # Popualtion of origin
-sed 's|rPROP|'"$rPROP"'|' -i scriptR_$pop.R # Popualtion size (1/10 of production area)
+sed 's|Npop|'"$npop"'|g' -i R/scriptR_$pop.R # Number of popualtions
+sed 's|popo|'"$pop"'|' -i R/scriptR_$pop.R # Popualtion of origin
+#sed 's|rPROP|'"$rPROP"'|' -i R/scriptR_$pop.R # Popualtion size (1/10 of production area)
 
-sed 's|tempCC|'"$Temp"'|' -i scriptR_$pop.R
-sed 's|ampCC|'"$Amp"'|' -i scriptR_$pop.R
-sed 's|seaCC|'"$Sea"'|' -i scriptR_$pop.R
+sed 's|tempCC|'"$Temp"'|' -i R/scriptR_$pop.R
+sed 's|ampCC|'"$Amp"'|' -i R/scriptR_$pop.R
+sed 's|seaCC|'"$Sea"'|' -i R/scriptR_$pop.R
 
-sed 's|fish.state|'"$state"'|' -i scriptR_$pop.R
-sed 's|fish.stage|'"$stage"'|' -i scriptR_$pop.R
+sed 's|fish.state|'"$state"'|' -i R/scriptR_$pop.R
+sed 's|fish.stage|'"$stage"'|' -i R/scriptR_$pop.R
 
+# Create temporary folder (needed to put migrants files)
+mkdir -p tmp/
 
-# R CMD BATCH --no-save --no-restore scriptR_$iSIMUL.R
-# 
-# rm -f demoIbasam"$iSIMUL"_TMP.R
-# rm -f scriptR_$iSIMUL.R
-# rm -f scriptR_$iSIMUL.Rout
+# Run analysis
+R CMD BATCH --no-save --no-restore --slave R/scriptR_$pop.R R/scriptR_$pop.out &
 
-#scp RESsimul* jp@147.100.14.190:$REPsimul/$vIBASAM/.
-#rm -f RESsimul*
+# rm -f R/scriptR_$pop.out
+# rm -f R/scriptR_$pop.R
 
 done
 

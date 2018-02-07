@@ -1,9 +1,12 @@
 demoIbasam <-
-  function (nInit,nYears
+  function (nInit
+            ,nYears
             , npop # Number of popualtions
             , Pop.o # Popualtion of origin
             , rPROP
-            , CC.Temp, CC.Amp # effects of climate change in freshwater
+            , pstray 
+            , CC.Temp
+            , CC.Amp # effects of climate change in freshwater
             , CC.Sea # effects of climate change at sea
             , fisheries = TRUE, stage = TRUE, fishing_rate=c(.15, .15, .15) ## fishing effects
             , plotting = FALSE, window = FALSE, returning = TRUE, success = FALSE, empty = TRUE
@@ -15,6 +18,26 @@ demoIbasam <-
     def <- defaultParameters()
     
    #### PARAMETERS ####
+    # If maxRIV <0 or maxSEA <0, NO trade-offs
+    kappaRIV=0.001
+    kappaSEA=0.001
+    
+    heriRIV=0.14
+    heriSEA=0.14
+    
+    maxSEA=50
+    sigSEA=100
+    
+    maxRIV=5
+    sigRIV=3.7
+    
+    SP0=0.9841606*1.005
+    SP1=0.9914398*1.005
+    SP1S=0.9967923*1.002
+    SP1M=0.9863295*1.002
+    SPnM=0.9911798*1.002
+    SPn=0.99775*1.002
+    
     def$envParam[9] <- 200811*rPROP#1/10 du scorff
     def$gParam[1] <- round(def$envParam[9]*8*0.15)
     def$parrParam[1] <- round(def$gParam[1]*0.011)
@@ -32,7 +55,7 @@ demoIbasam <-
     def$colParam[13:18] <- c(SP0,SP1,SP1S,SP1M,SPnM,SPn) #daily survival prob parr 0 to 0.5; daily survival prob parr 0.5 to 1.0; daily survival prob smolts 0.5 to run; daily survival prob parr mature 0.5 to 1.0; daily survival prob parr mature n.5 to n+1; daily survival prob parr any other situations
     
     #### ENVIRONMENT ####
-    mm <- river_climate_model(nInit, nYears + 1, CC.Temp, CC.Amp)
+    mm <- river_climate_model(nInit + nYears + 1, CC.Temp, CC.Amp)
     Reset_environment()
     Prepare_environment_vectors(mm$temperatures, mm$logrelflow)
     setup_environment_parameters(def$envParam)
@@ -110,7 +133,7 @@ demoIbasam <-
           next 
         } else {
           emfile <- paste("tmp/Mig_",Pop.o,"-",Pop.e,"_",y,".txt",sep="")
-          pstray <- c(0.1,0.1)
+          #pstray <- c(0.1,0.1)
           emmigrants(emfile,pstray)
         } # end if
       } # end Pop.e
