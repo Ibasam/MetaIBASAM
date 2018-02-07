@@ -9,8 +9,8 @@ for pop in $(seq 1 $npop)
 do
 
 # Create straying matrix
-cp R/stray.R R/stray_$npop.R
-sed 's|npop|'"$npop"'|g' -i R/stray_$npop.R
+cp R/stray.R R/stray_$npop.R # copy stray.R
+sed 's|npop|'"$npop"'|g' -i R/stray_$npop.R # replace npop into stray.R
 
 # Create R script for each populations
 cp R/rIBASAM.R R/rIBASAM_$pop.R
@@ -22,7 +22,7 @@ sed 's|nYears|'"$nyears"'|g' -i R/rIBASAM_$pop.R
 mkdir -p tmp/
 
 # Run analysis
-R CMD BATCH --no-save --no-restore --slave R/stray.R R/stray.Rout &
+R CMD BATCH --no-save --no-restore --slave R/stray_$npop.R R/stray_$npop.Rout &
 
 # Run analysis
 R CMD BATCH --no-save --no-restore --slave R/rIBASAM_$pop.R R/rIBASAM_$pop.out &
