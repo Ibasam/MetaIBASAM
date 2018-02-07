@@ -75,6 +75,11 @@
           } # end if
         } # end Pop.e
         
+        pope <- observe()
+        # if (returning || success) {
+        #   results <- rbind(results, pope)
+        # }
+        
         for (Pop.i in 1:npop){
           # Pop.o: population of origin
           # Pop.i: immigrate from population Pop.i
@@ -87,9 +92,9 @@
           } # end if
         } # end Pop.i
         
-        # pope <- observe()
+        popi <- observe()
         # if (returning || success) {
-        #   results <- rbind(results, pope)
+        #   results <- rbind(results, popi)
         # }
         
         
