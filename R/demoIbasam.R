@@ -9,7 +9,7 @@ demoIbasam <-
             , CC.Amp # effects of climate change in freshwater
             , CC.Sea # effects of climate change at sea
             , fisheries = TRUE, stage = TRUE, fishing_rate=c(.15, .15, .15) ## fishing effects
-            , plotting = FALSE, window = FALSE, returning = TRUE, success = FALSE, empty = TRUE
+            , plotting = TRUE, window = FALSE, returning = TRUE, success = FALSE, empty = TRUE
             ) 
   {
     
