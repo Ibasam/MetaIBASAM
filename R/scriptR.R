@@ -1,7 +1,7 @@
 ## Loading libraries, functions,...
 #setwd(paste("REPbase","Ibasam","vIBASAM","/",sep=""))
 
-library(Ibasam)
+library(metaIbasam)
 
 ## Loading Ibasam R script 
 #setwd(paste("REPbase","vIBASAM","/",sep=""))
@@ -17,7 +17,7 @@ source("demoIbasam.R")
                     , npop = Npop # Number of popualtions
                     , Pop.o = popo # Popualtion of origin
                     , rPROP = .1 # Popualtion size (1/10 of production area)
-                    , pstray = 0.5
+                    , pstray = 0.01
                     , CC.Temp=tempCC # Water Temperature increase (keep constant if 0)
                     , CC.Amp=ampCC # Flow amplitude increase (keep constant if 1)
                     , CC.Sea=seaCC #.75 # decresaing growth condition at sea (seqeunce from 1 to .75; keep constant if 1)
