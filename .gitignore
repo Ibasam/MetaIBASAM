@@ -7,9 +7,9 @@
 /scratch
 /docs
 /Biblio
-/master.Rcheck
-/master/src-i386
-/master/src-x64
+/metaIbasam.Rcheck
+/metaIbasam/src-i386
+/metaIbasam/src-x64
 /binary/
 /script_parallel.R
 /R/tmp/*

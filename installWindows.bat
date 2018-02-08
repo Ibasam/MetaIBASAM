@@ -1,3 +1,3 @@
-open IBASAM/src/Makevars.win
-R CMD build Ibasam
-R CMD INSTALL Ibasam_2.3.1.tar.gz
+open metaIbasam/src/Makevars.win
+R CMD build metaIbasam
+R CMD INSTALL metaIbasam_0.0.2.tar.gz
