@@ -12,11 +12,11 @@
 #ver=version
 
 # Parameters:
-npop=4
+npop=15
 #nSIMUL=nsim # Nb simulations
 Init=5 # Nb years to initialized
-Years=5 # Nb years simulated
-rPROP=0.2 # proportion (popualtion size)
+Years=50 # Nb years simulated
+rPROP=0.1 # proportion (popualtion size)
 
 # Environmental conditions:
 Temp=0 # Water Temperature (T° increase / Years; keep constant if 0)
