@@ -1,3 +1,3 @@
-gedit metaIBASAM/src/Makevars
-R CMD build metaIbasam
+gedit master/src/Makevars
+R CMD build master
 sudo R CMD INSTALL metaIbasam_0.0.2.tar.gz
