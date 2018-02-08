@@ -1,4 +1,4 @@
-  library(Ibasam)
+  library(metaIbasam)
   
   ##First read in the arguments listed at the command line
   # args=(commandArgs(TRUE))
@@ -52,7 +52,24 @@
         ptm <- proc.time()
         spring()
         summer()
+        #### FISHING ####
+        if (fisheries) {
+            rates <- cbind(grilses = rep(fishing_rate[1], nYears), 
+                msw = rep(fishing_rate[2], nYears))
+            fishing(rates[y, ])
+        }        
         
+        popo <- observe()
+        if (returning || success) {
+            results <- rbind(results, popo)
+        }
+        
+        ratios[y, ] <- unlist(proportions.population(popo))
+        summerM[y, ] <- unlist(important.indicator.summer.population(popo))
+        autumn()
+        winter()
+        
+        popa <- observe()
         #### STRAYING ####
         #emmigrants("nom de fichier", straying_rates for 1SW & MSW)
         #pause("nom de fichier")
@@ -98,24 +115,7 @@
         # }
         
         
-        #### FISHING ####
-        if (fisheries) {
-            rates <- cbind(grilses = rep(fishing_rate[1], nYears), 
-                msw = rep(fishing_rate[2], nYears))
-            fishing(rates[y, ])
-        }        
         
-        popo <- observe()
-        if (returning || success) {
-            results <- rbind(results, popo)
-        }
-        
-        ratios[y, ] <- unlist(proportions.population(popo))
-        summerM[y, ] <- unlist(important.indicator.summer.population(popo))
-        autumn()
-        winter()
-        
-        popa <- observe()
         if (returning || success) {
             results <- rbind(results, popa)
         }
