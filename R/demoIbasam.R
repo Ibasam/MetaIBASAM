@@ -116,6 +116,23 @@ demoIbasam <-
       spring()
       summer()
       
+      #### FISHING ####
+      #popo <- observe() # state BEFORE fisheries
+      if (fisheries) {
+        fishing(rates[y,])
+      }
+      
+      popo <- observe() # state AFTER fisheries        
+      if (returning || success) {
+        results <- rbind(results, popo)
+      }
+      
+      ratios[y, ] <- unlist(proportions.population(popo))
+      summerM[y, ] <- unlist(important.indicator.summer.population(popo))
+      
+      autumn()
+      winter()
+      
       #### STRAYING ####
       #emmigrants("nom de fichier", straying_rates for 1SW & MSW)
       #pause("nom de fichier")
@@ -138,6 +155,8 @@ demoIbasam <-
         } # end if
       } # end Pop.e
       
+      #pope <- observe()
+      
       for (Pop.i in 1:npop){
         # Pop.o: population of origin
         # Pop.i: immigrate from population Pop.i
@@ -150,32 +169,17 @@ demoIbasam <-
         } # end if
       } # end Pop.i
       
-      # pope <- observe()
+      #popi <- observe()
       # if (returning || success) {
       #   results <- rbind(results, pope)
       # }
-      popo <- observe() # state BEFORE fisheries
       
-      
-      #### FISHING ####
-      if (fisheries) {
-        fishing(rates[y,])
-      }
-      
-      # popo <- observe() # state AFTER fisheries        
-      if (returning || success) {
-        results <- rbind(results, popo)
-      }
-      
-      ratios[y, ] <- unlist(proportions.population(popo))
-      summerM[y, ] <- unlist(important.indicator.summer.population(popo))
-      
-      autumn()
-      winter()
       popa <- observe() 
       if (returning || success) {
         results <- rbind(results, popa)
       }
+      
+      
       winterM[y, ] <- unlist(important.indicator.winter.population(popa))
       ally <- append.oneyear(popo, popa, ally)
       sptm <- rbind(sptm, proc.time() - ptm)
