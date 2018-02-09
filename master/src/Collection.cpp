@@ -2,7 +2,7 @@
  * 	IBASAM : Individual Based Atlantic SAlmon Model
  *
  * 	Cyril Piou, 2009-2010, part of the Salmo salar individual based model metaIbasam
- *  and Julien Papaix 2015
+ *  and Julien Papaix 2015 and Mathieu Buoro 2017-ongoing
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  *
  *  Any questions or remarks, please contact Cyril Piou at:
  *
- *  piou.cyril<at>yahoo.fr
+ *  cyril.piou<at>cirad.fr
  *
  */
 

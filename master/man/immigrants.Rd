@@ -30,6 +30,7 @@ immigrants(filename)
 }
 \author{
 Cyril Piou
+Mathieu Buoro
 }
 \note{
 %%  ~~further notes~~

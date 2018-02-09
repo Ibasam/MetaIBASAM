@@ -33,6 +33,7 @@ emmigrants(filename,probStray)
 }
 \author{
 Cyril Piou
+Mathieu Buoro
 }
 \note{
 %%  ~~further notes~~

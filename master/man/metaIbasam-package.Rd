@@ -1,24 +1,25 @@
 \name{metaIbasam-package}
 \alias{metaIbasam-package}
-\alias{Ibasam}
+\alias{metaIbasam}
 \docType{package}
 \title{
-Ibasam2
+metaIbasam
 }
 \description{
-Ibasam2
+Metapopulation version of Ibasam
 }
 \details{
 \tabular{ll}{
 Package: \tab metaIbasam\cr
 Type: \tab Package\cr
-Version: \tab 2.3.0\cr
-Date: \tab 2015-09-05\cr
+Version: \tab 0.0.2\cr
+Date: \tab 2018-02-09\cr
 License: \tab GPL2\cr
 }
 }
 \author{
-Cyril Piou <piou.cyril@yahoo.fr>
+Cyril Piou <cyril.piou@cirad.fr>
+Mathieu Buoro <mathieu.buoro@inra.fr>
 }
 \references{
 }
