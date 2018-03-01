@@ -10,6 +10,13 @@ library(metaIbasam)
 #source(paste("demoIbasam","iSIMUL","_TMP.R",sep=""))
 source("demoIbasam.R")
 
+## Random Number Generation
+# Seed is created from the current time and the process ID when one is required. 
+# Hence different sessions will give different simulation results, by default. 
+# However, the seed might be specified to replicate simulations (between sessions):
+set.seed(999)
+
+
 ## Run simualtions
 #RES <- list()
 #for (i in 1:nSIMUL){
