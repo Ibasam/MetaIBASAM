@@ -4,10 +4,10 @@
 
 # Parameters:
 npop=16
-nSIMUL=100 # Nb simulations 100
+nSIMUL=10 # Nb simulations 100
 Init=15 # Nb years to initialized 15
 Years=50 # Nb years simulated 50
-rPROP_RT=0.2 # proportion (population size) 20% de l'aire
+rPROP_RT=0.1 # proportion (population size) 20% de l'aire
 
 # Connectivity conditions:
 scenarioConnectRT=3 #scenario 1 pour h=1.00, scenario 2 pour h=0.942, scenario 3 pour h=0.80
