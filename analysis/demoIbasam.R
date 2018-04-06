@@ -1,4 +1,4 @@
-demoIbasam_V3 <-
+demoIbasam <-
   function (nInit #nbr d'année pour faire burn-in
             ,nYears #nbr d'année pour faire simulation
             , npop # Number of populations
@@ -165,7 +165,7 @@ demoIbasam_V3 <-
         if(Pop.e == Pop.o) { 
           next 
         } else {
-          emfile <- paste("tmp/Simu",i,"/Mig_",Pop.o,"-",Pop.e,"_",i,"_",y,".txt",sep="") 
+          emfile <- paste("tmp/Mig_",Pop.o,"-",Pop.e,"_",y,".txt",sep="") 
           #i c'est l'indice pour nSimu définit dans scriptR 
           #y c'est le numéro de l'année en incluant celles de burnin 
           #pstray <- c(0.1,0.1)
@@ -181,7 +181,7 @@ demoIbasam_V3 <-
         if(Pop.i == Pop.o) { 
           next 
         } else {
-          imfile <- paste("tmp/Simu",i,"/Mig_",Pop.i,"-",Pop.o,"_",i,"_",y,".txt",sep="")
+          imfile <- paste("tmp/Mig_",Pop.i,"-",Pop.o,"_",y,".txt",sep="")
           pause(imfile) # R script to pause the execution of Ibasam until immigrant file (e.g. mig_AtoB) is created in a specific folder
           immigrants(imfile)
         } # end if

@@ -5,7 +5,7 @@ library(metaIbasam) #loading Ibasam R script
 #Sys.setlocale('LC_ALL','C') 
 #source(paste("scriptIBASAM","vIBASAM","iSIMUL","_TMP.R",sep=""))
 #source(paste("demoIbasam","iSIMUL","_TMP.R",sep=""))
-source("demoIbasam_V3bis.R")
+source("demoIbasam.R")
 
 
 ##### 1. Aire production #####
@@ -56,9 +56,10 @@ seaCC=env[[scenarioEnvi]][3]
 
 
 ##### 5. Simulations #####
-RES <- list()
-for (i in 32:98){ #à rechanger pour les autres scenarii 73:100 ou 1:nSimu (normalement)
-  RES <- demoIbasam_V3(nInit=init,nYears=years # Nb years simulated
+#RES <- list()
+#for (i in 1:nSimu){ #à rechanger pour les autres scenarii 73:100 ou 1:nSimu (normalement)
+  #cat("\n","Simulation",i,"over",nSimu,"\n") # counter
+  RES <- demoIbasam(nInit=init,nYears=years # Nb years simulated
                        , npop = Npop # Number of popualtions
                        , Pop.o = popo # Population of origin
                        , rPROP = rPROPScript # Proportion de la taille de pop
@@ -74,12 +75,13 @@ for (i in 32:98){ #à rechanger pour les autres scenarii 73:100 ou 1:nSimu (norm
                        , pstray=pstrayScript[popo,]  # Dispersal probability #ligne popo
   )
   RES <- RES[RES$year>init,]
-  save(RES,file=paste0("tmp/RESsimul_",popo,".RData"))
-  save(RES,file=paste0("results/RESsimul_",popo,"_iSIMUL","-",i,".RData"))
-}
+  save(RES,file=paste0("results/RES_Pop-",popo,".RData"))
+  #save(RES,file=paste0("/results/RES_Pop-",popo,"_Simul-",i,".RData"))
+  rm(RES) # remove RES object
+  gc() # clean memory
+#}
 
 
-
-
+q('no') # close R session
 
 
