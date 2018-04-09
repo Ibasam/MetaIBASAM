@@ -19,4 +19,8 @@ Etienne Prevost (INRA, UMR ECOBIOP)
 This project is funded by AFB (French Agency for Biodiversity) and INRA.
 
 
+# Update
+CollectID : numero de la popualtion
+ID: les derniers chiffres correspondent au numéro de popualtion (pour éviter les doublons lorsque un individu migrant arrive dans une population)
+
 Contact: mathieu.buoro@inra.fr

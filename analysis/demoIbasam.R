@@ -98,6 +98,7 @@ demoIbasam <-
     }
     
     #### INITIALIZING POPULATION ####
+    set_collecID(Pop.o) # provide ID number for each popualtion (variable CollecID) to avoid duplicate individulas ID with migrants
     time_tick(90)
     add_individuals(def$gParam)
     add_individuals(def$parrParam)

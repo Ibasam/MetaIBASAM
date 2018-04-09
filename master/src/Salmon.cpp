@@ -140,7 +140,7 @@ Salmon::Salmon(double W, double F, double lwa, double lwb,double lwa_sea, double
 	//end edit Julien Papaix
 	
 	IDs++;
-	ID_ = IDs;
+	ID_ = CollecID + 100 * IDs; // ID_ = IDs;
 	myGenes_.updateID(ID_);//,motherID,fatherID);
 	CollecID_=CollecID;
 	age_river_=ageRiver;

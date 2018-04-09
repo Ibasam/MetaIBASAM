@@ -3,9 +3,9 @@
 
 # Parameters:
 npop=16
-nSIMUL=20 # Nb simulations 100
+nSIMUL=1 # Nb simulations 100
 Init=5 # Nb years to initialized 15
-Years=50 # Nb years simulated 50
+Years=10 # Nb years simulated 50
 rPROP_RT=0.2 # proportion (population size) 20% de l'aire
 
 # Fishing:
