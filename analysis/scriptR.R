@@ -1,3 +1,5 @@
+#set.seed(666) # R‘s random number generator. Use the set.seed function when running simulations to ensure all results, figures, etc are reproducible.
+
 library(metaIbasam) #loading Ibasam R script
 
 
