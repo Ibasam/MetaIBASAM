@@ -20,7 +20,8 @@ This project is funded by AFB (French Agency for Biodiversity) and INRA.
 
 
 # Update
-CollectID : numero de la popualtion
+CollectID : numero de la popualtion d'origine
 ID: les derniers chiffres correspondent au numéro de popualtion (pour éviter les doublons lorsque un individu migrant arrive dans une population)
+/!\ L'ID des immigrants n'est pas conservé. Seul le CollecID et les derniers chiffres (CollecID).
 
 Contact: mathieu.buoro@inra.fr

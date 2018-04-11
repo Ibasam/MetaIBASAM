@@ -1145,6 +1145,8 @@ void Collection::immigrants(const char* filenameImport){
 				inputVar[11]=temp[41];
 				inputVar3[2]=static_cast<unsigned>(temp[43]);//nb reproduced
 				genemapIndex=0;
+				
+				inputVar[12]=temp[16];//CollectID
 
 				fix_inputs[0]=temp[0];//Lf
 				fix_inputs[1]=temp[11];//DW
@@ -1208,7 +1210,7 @@ void Collection::immigrants(const char* filenameImport){
 					Salmon o(inputVar[0],inputVar[1],lwa_,lwb_,lwa_sea_,lwb_sea_,inputVar2[0],inputVar2[1],inputVar2[2],inputVar2[3],inputVar2[4],
 									b_allom_, smolt1_activity_, winterLMG_activity_,smoltN_activity_,inputVar[2],inputVar[3],inputVar[4],
 									Sp0_, Sp1_, Sp1S_, Sp1M_, SpnM_, Spn_,  RickA_,  RickB_, K_, Wmax_, gPercFm_,
-									CollecID_, inputVar[5],inputVar[6],inputVar[7],inputVar[8],inputVar[9], genes,
+									inputVar[12], inputVar[5],inputVar[6],inputVar[7],inputVar[8],inputVar[9], genes,
 									maxRIV_,sigRIV_,kappaRIV_,maxSEA_,sigSEA_,kappaSEA_);	 //create the animal
 					o.fix_inputs(fix_inputs);
 					push_back(o);
