@@ -156,9 +156,7 @@ done # end while loop
 #wait 
 
 ENDTIME=$(date +%s);
-#ENDTIME2=$SECONDS;
 MINUTES=$(( ($ENDTIME - $STARTTIME) / 60 )); # Elapsed time
-#DURATION=$(( $ENDTIME2 / 60 ));
 
 if [ -n "$(ls -A $DIR 2>/dev/null)" ];then # check if DIR is not empty
 echo "Simulation $s succesful! Duration: $MINUTES minutes" 
