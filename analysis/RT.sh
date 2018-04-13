@@ -1,5 +1,4 @@
-# ! /bin/sh
-#$ -S /bin/sh
+#!/bin/bash
 
 # Parameters:
 npop=16
@@ -31,7 +30,7 @@ stage=TRUE # fishing on life stages (1SW/MSW) if TRUE, on Sizes ("small","med","
 
 
 # Connectivity conditions:
-scenarioConnectRT=3 #scenario 1 pour h=1.00, scenario 2 pour h=0.942, scenario 3 pour h=0.80
+scenarioConnectRT=2 #scenario 1 pour h=1.00, scenario 2 pour h=0.942, scenario 3 pour h=0.80
 
 # Environmental conditions:
 scenarioEnviRT=1 #scenario 1 pour absence de CC, scenario 2 pour CC
@@ -57,6 +56,7 @@ fi
 cd $scenario # move directory to scenario folder
 
 # 2. SIMULATION
+echo "BEGINNING OF SIMULATION FOR $scenario"
 echo "PID du processus courant : $$"
 for s in $(seq 1 $nSIMUL)
 do
@@ -124,71 +124,47 @@ PIDS+=("$!") # add PID du processus lance dans l'array
 ## rm -f scriptR_$pop.out
 ## rm -f scriptR_$pop.R
 done # end loop pop
-
+sleep 5 # sleep 5 seconds
 
 
 # 4. CHECK
-## Old
-# DIR="results/"
-# sleep $maxtime #sleep for maxtime minutes
-# #if [ ! -s results/*.Rdata ];then
-# if [ "$(ls -A $DIR)" ]; then # test for empty directory
-#      echo "Simulation $s succesful!"
-# else
-#     echo "Simulation $s failed"
-#     pkill -2 R # kill all R processes
-# fi
-# cd .. # return to main directory
-
 DIR="results/" # directory where to save results
-STARTTIME=$(date +%s)
-while [ ! "$(ls -A $DIR)" ] # check if DIR is empty
-#while [ ! -f "$DIR/RES_Pop-14.RData" ]
-do
+STARTTIME=$(date +%s);
+SECONDS=0;
 
-  ## test if execution halted in .Rout files
-  for pop in $(seq 1 $npop)
-  do
-    File="scriptR_$pop.Rout"
-    if grep -q "Execution halted" "$File"; then
-      echo "Population $pop : Execution halted"
-      echo "Re-launch $File"
-      R CMD BATCH --vanilla scriptR_$pop.R &
-      PIDS[$pop]=("$!")
-    fi
-  done
+while : ; do # infiite loop
+	sleep 60;   # sleep for minute
+	# Break if DIR not empty:
+  [[ -n "$(ls -A $DIR 2>/dev/null)" ]] && break
 
-  ## Test if analysis are too long
-  ENDTIME=$(date +%s)
-  MINUTES=$(( ($ENDTIME - $STARTTIME) / 60 ))
-  #echo "$MINUTES"
-  if [ "$MINUTES" -gt "$maxtime" ] ; then # check if elapsed time is greater than max time allowed
-    echo "Simulation $s failed"
-    for pid in "${PIDS[@]}"; do
-    pkill -P "$pid"
-    done
-    pkill -P $$ #kill $(ps -s $$ -o pid=) # kills all children of the current given process $$
+# check if Rout files contain "Execution halted"
+  if grep -q "Execution halted" *.Rout;then 
+      echo "Simulation $s failed"
 
-  cd .. # return to main directory
-  rm -R Simu$s # remove failed simulation
-	break       	   #Abandon the while loop
+      for pid in "${PIDS[@]}"; do
+        pkill -P "$pid" # kill grandchild processes
+        done
+        pkill -P $$ #kill $(ps -s $$ -o pid=) # kills all children of the current given process $$
+
+        nSIMUL=$(( $nSIMUL + 1 )) # add 1 simulation to nSimul
+        
+        #cd .. # return to main directory
+        #rm -R Simu$s # remove failed simulation
+	      break       	   #Abandon the while loop
   fi
-  
-  sleep 60;   # sleep for minute
-  
 done # end while loop
+#wait 
 
-if [ "$(ls -A $DIR)" ]; then
-#if [ -f "$DIR/RES_Pop-14.RData" ]; then
-    ENDTIME=$(date +%s)
-    MINUTES=$(( ($ENDTIME - $STARTTIME) / 60 ))
-    maxtime=$(( $MINUTES + 10 ))    
-    echo "Simulation $s succesful! Duration: $MINUTES minutes"
-    echo "New maxtime : $maxtime minutes"
-    sleep 30 # sleep for 30 seconds
-    cd .. # return to main directory
+ENDTIME=$(date +%s);
+#ENDTIME2=$SECONDS;
+MINUTES=$(( ($ENDTIME - $STARTTIME) / 60 )); # Elapsed time
+#DURATION=$(( $ENDTIME2 / 60 ));
+
+if [ -n "$(ls -A $DIR 2>/dev/null)" ];then # check if DIR is not empty
+echo "Simulation $s succesful! Duration: $MINUTES minutes" 
+sleep 60 # sleep for 60 seconds ; to save results
 fi
 
+cd .. # return to main directory
 done # end loop simul
-
 echo "END OF SIMULATION"
