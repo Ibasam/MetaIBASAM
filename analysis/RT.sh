@@ -2,7 +2,7 @@
 
 # Parameters:
 npop=16
-nSIMUL=30 # Nb simulations 100
+nSIMUL=100 # Nb simulations 100
 Init=15 # Nb years to initialized 15
 Years=50 # Nb years simulated 50
 rPROP_RT=0.2 # proportion (population size) 20% de l'aire
@@ -30,7 +30,7 @@ stage=TRUE # fishing on life stages (1SW/MSW) if TRUE, on Sizes ("small","med","
 
 
 # Connectivity conditions:
-scenarioConnectRT=2 #scenario 1 pour h=1.00, scenario 2 pour h=0.942, scenario 3 pour h=0.80
+scenarioConnectRT=3 #scenario 1 pour h=1.00, scenario 2 pour h=0.942, scenario 3 pour h=0.80
 
 # Environmental conditions:
 scenarioEnviRT=1 #scenario 1 pour absence de CC, scenario 2 pour CC
@@ -58,7 +58,9 @@ cd $scenario # move directory to scenario folder
 # 2. SIMULATION
 echo "BEGINNING OF SIMULATION FOR $scenario"
 echo "PID du processus courant : $$"
-for s in $(seq 1 $nSIMUL)
+for s in $(seq 35 $nSIMUL) # scenario 3.1
+#for s in $(seq 31 $nSIMUL) # scenario 2.1
+
 do
 
 if [ ! -d "Simu$s" ]; then
@@ -131,22 +133,23 @@ sleep 5 # sleep 5 seconds
 DIR="results/" # directory where to save results
 STARTTIME=$(date +%s);
 SECONDS=0;
+declare -a simFAILED
 
-while : ; do # infiite loop
+# Infinite loop:
+while : ; do
 	sleep 60;   # sleep for minute
-	# Break if DIR not empty:
+	# Break while if DIR no empty:
   [[ -n "$(ls -A $DIR 2>/dev/null)" ]] && break
 
 # check if Rout files contain "Execution halted"
   if grep -q "Execution halted" *.Rout;then 
       echo "Simulation $s failed"
-
+	      simFAILED+=("$s")
+        nSIMUL=$(( $nSIMUL + 1 )) # add 1 simulation to nSimul
       for pid in "${PIDS[@]}"; do
         pkill -P "$pid" # kill grandchild processes
         done
         pkill -P $$ #kill $(ps -s $$ -o pid=) # kills all children of the current given process $$
-
-        nSIMUL=$(( $nSIMUL + 1 )) # add 1 simulation to nSimul
         
         #cd .. # return to main directory
         #rm -R Simu$s # remove failed simulation
@@ -156,13 +159,21 @@ done # end while loop
 #wait 
 
 ENDTIME=$(date +%s);
-MINUTES=$(( ($ENDTIME - $STARTTIME) / 60 )); # Elapsed time
+#ENDTIME2=$SECONDS;
+MINUTES=$(( ($ENDTIME - $STARTTIME) / 60 ));
+#DURATION=$(( $ENDTIME2 / 60 ));
 
 if [ -n "$(ls -A $DIR 2>/dev/null)" ];then # check if DIR is not empty
-echo "Simulation $s succesful! Duration: $MINUTES minutes" 
-sleep 60 # sleep for 60 seconds ; to save results
+  echo "Simulation $s successful! Duration: $MINUTES minutes" 
+  sleep 60 # sleep for 60 seconds   
 fi
 
-cd .. # return to main directory
-done # end loop simul
+# return to main directory
+cd ..
+
+# end loop simul
+done
+
+echo "SIMULATIONS $simFAILED FAILED"
 echo "END OF SIMULATION"
+
