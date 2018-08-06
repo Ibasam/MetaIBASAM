@@ -1,0 +1,287 @@
+---
+title: "Demography"
+output:
+  pdf_document: default
+---
+
+## R Markdown
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+col<- c("#000000", "#FF0000")
+load("/media/hdd/mbuoro/MetaIBASAM/analysis/30Simul/PE.Rdata")
+nSIMUL <- 30
+
+
+# Functions
+colSd <- function (x, na.rm=FALSE) apply(X=x, MARGIN=2, FUN=sd, na.rm=na.rm)
+co.var <- function(x) ( 100*sd(x)/mean(x))
+loess_detrended <- function(y) residuals(loess(y~c(1:length(y))))
+linear_detrended <- function(y) residuals(lm(y~c(1:length(y))))
+
+cv.detrend <- function(x){
+y=list()
+for (j in 1:length(x)) {
+  y[[j]] <- apply(x[[j]],2,loess_detrended)
+  m <- apply(x[[j]],2,loess_detrended)
+}
+m <- lapply(x,colMeans)
+sd <- lapply(y,colSd)
+mat.m <- do.call(rbind, m)
+mat.sd <- do.call(rbind, sd)
+cv <- mat.sd / mat.m
+median.sd <- apply(cv, 2, quantile, probs = c(0.5))
+return(median.sd)
+}
+
+
+n.last <- function(x){
+tail5 <-function(x) tail(x,5) # extract 5 last years
+tail.list <- lapply(x, tail5) # tail over simualtions
+metapop <- lapply(tail.list, colMeans) # means by assets
+mat <- do.call(rbind, metapop)
+median <- apply(mat, 2, quantile, probs = c(0.5))
+ return(median)
+}
+
+
+
+# River names
+rivers <- c("Couesnon", "Leff", "Trieux", "Jaudy", "Leguer", "Yar", "Douron", "Penze", "Elorn", "Aulne", "Goyen", "Odet", "Aven", "Laïta", "Scorff", "Blavet")
+
+##### 1. Aire production #####
+# vecteur Aire estimée en 2015 dans cet ordre, unité m²
+aireScript=c(110794, 72305, 213733, 47561, 197283, 37104, 95451, 106753,  164699, 252659, 53603, 249049, 142686, 669028, 229027, 393985)
+
+
+##### 2. Stock-recrutement #####
+# vecteur Rmax dans le même ordre, on prend les estimations médianes, unité nbr tacons0+/100m²
+RmaxScript=c(12.41, 27.32, 16.28, 31.95, 25.30, 15.94, 25.98, 40.51, 29.17, 4.319, 36.23, 31.48, 20.26, 23.51, 15.13, 14.62)
+
+# vecteur alpha dans le même ordre, on prend les estimations médianes
+alphaScript=c(0.03140, 0.06913, 0.04119, 0.08084, 0.06401, 0.04034, 0.06575, 0.1025, 0.07381, 0.01093, 0.09168, 0.07965, 0.05126, 0.05949, 0.03828, 0.03698)
+
+
+# choix de travailler avec les facteurs multiplicatifs par rapport au Scorff
+M=c(0.82032, 1.8058, 1.0760, 2.1118, 1.6723, 1.0537, 1.7174, 2.6776, 1.9280, 0.28545, 2.3948, 2.0805, 1.3391, 1.5540, 1.0000, 0.96606)
+
+  
+```
+
+
+
+```{r SR, echo=FALSE}
+par(mfrow=c(1,1))
+#plot(NULL, xlim=range(alphaScript), ylim=range(RmaxScript), xlab="alpha", ylab="Rmax")
+symbols(alphaScript, RmaxScript, square= (aireScript/sum(aireScript))*10, xlab="alpha", ylab="Rmax")
+text(alphaScript, RmaxScript, labels = rivers, cex= (aireScript/sum(aireScript))*10)
+```
+
+```{r SRM, echo=FALSE}
+par(mfrow=c(1,1))
+#plot(NULL, xlim=range(alphaScript), ylim=range(RmaxScript), xlab="alpha", ylab="Rmax")
+symbols(alphaScript, RmaxScript, circles= M, xlab="alpha", ylab="Rmax")
+text(alphaScript, RmaxScript, labels = rivers, cex= 1)
+```
+
+
+
+# ABUNDANCE
+
+First, we extract the abundances for the last 5 years and we calculate the means accross populations over each simulations. Then, we calculate the medians over simulations.
+
+```{r total-median, echo=FALSE}
+
+x=log(aireScript)
+xlim=range(x)
+ylim=log(c(10,500))
+y=log(n.last(nReturns$`11`))
+plot(NULL,xlim=xlim, ylim=ylim, ylab="Abundance (log)", xlab="Area (log)")
+text(x, y,labels = rivers, cex=1,col="#00000040")
+
+y=log(n.last(nReturns$`12`))
+text(x, y,labels = rivers, cex=1, col="#FF404040")#, pos=3)
+
+
+# y=n.last(nReturns$`21`)
+# text(x, y,labels = rivers, cex=1,col="#00000070")
+# 
+# y=n.last(nReturns$`22`)
+# text(x, y,labels = rivers, cex=1, col="#FF404070")#, pos=3)
+
+
+y=log(n.last(nReturns$`31`))
+text(x, y,labels = rivers, cex=1, col="#000000")#, pos=3)
+
+y=log(n.last(nReturns$`32`))
+text(x, y,labels = rivers, cex=1, col="#FF4040")#, pos=3)
+
+legend("topleft",legend=c("control","Connect","CC", "Connect+CC"),fill=c("#00000040","#000000", "#FF404040", "#FF4040"),border =NA,bty="n")
+```
+The figure above shows that the abundances increases with connectivity for small popaultions but decrease for bigger popaulations. Popaultions size decrease with climate change but connectivity tend to reduce this effect for small popualtions while 
+reinforce for bigger popaultion (Laita).
+
+```{r perc_area, echo=FALSE}
+median11=n.last(nReturns$`11`)
+median12=n.last(nReturns$`12`)
+median21=n.last(nReturns$`21`)
+median22=n.last(nReturns$`22`)
+median31=n.last(nReturns$`31`)
+median32=n.last(nReturns$`32`)
+
+#par(mfrow=c(1,2))
+
+x=log(aireScript)
+xlim=range(x)
+
+
+# ABUNDANCE
+ylim=c(-80,80)
+plot(NULL,xlim=xlim, ylim=ylim, ylab="Abundance (%)", xlab="Area (log)")
+abline(h=0,lty=3)
+
+y <- ((median31-median11)/median11)*100
+text(x, ifelse(y>0,y+5, y-5),labels = rivers, cex=1,col="#000000")
+segments(x,0,x,y,col="#000000",lwd=3)
+
+y <- ((median32-median11)/median11)*100
+#text(x, y,labels = rivers, cex=1,col="#FF4040")
+segments(x,0,x,y,col="#FF4040",lwd=3)
+
+y <- ((median12-median11)/median11)*100
+#text(x, y,labels = rivers, cex=1,col="#FF404040")
+segments(x,0,x,y,col="#FF404040",lwd=3)
+
+legend("topright",legend=c("Connect","CC", "Connect+CC"),fill=c("#000000", "#FF404040", "#FF4040"),border =NA,bty="n")
+
+```
+
+
+
+# STABILITY
+
+First, we detrend the time series of returns using loess smoothing. We then calculate the standard deviation of residuals and means of returns for each populations accross simulations. Then, we calculate the medians over simulations. Finally, the coeffcient of variation ws determined using the ratio of sd over means.
+
+```{r total-cv, echo=FALSE}
+
+
+## now detrend if desired:
+
+x=log(aireScript)
+xlim=range(x)
+
+y = (cv.detrend(nReturns$`11`))
+#ylim=range(y)
+ylim=(c(.1,.35))
+plot(NULL,xlim=xlim, ylim=ylim, ylab="CV (detrend)", xlab="Area (log)")
+text(x, y,labels = rivers, cex=1,col="#00000040")
+
+y = (cv.detrend(nReturns$`12`))
+text(x, y,labels = rivers, cex=1, col="#FF404040")#, pos=3)
+
+#y = cv.detrend(nReturns$`21`)
+# text(x, y,labels = rivers, cex=1, col="#FF404070")#, pos=3)
+
+y = (cv.detrend(nReturns$`31`))
+text(x, y,labels = rivers, cex=1, col="#000000")#, pos=3)
+
+y = (cv.detrend(nReturns$`32`))
+text(x, y,labels = rivers, cex=1, col="#FF4040")#, pos=3)
+
+legend("topright",legend=c("Control","Connect","CC", "Connect+CC"),fill=c("#00000040","#000000", "#FF404040", "#FF4040"),border =NA,bty="n")
+```
+
+The figure above shows that the stability increases with popaultion size but conenctivity increase the stability of small popaultions. Stability decreseas slightly with CC.
+
+
+```{r CV_area, echo=FALSE}
+
+cv11 = cv.detrend(nReturns$`11`)
+cv12 = cv.detrend(nReturns$`12`)
+cv31 = cv.detrend(nReturns$`31`)
+cv32 = cv.detrend(nReturns$`32`)
+
+#par(mfrow=c(1,2))
+
+x=log(aireScript)
+xlim=range(x)
+
+# VARIATION
+ylim=c(-50,50)#range(y)
+plot(NULL,xlim=xlim, ylim=ylim, ylab="CV detrend (%)", xlab="Area (log)")
+abline(h=0,lty=3)
+
+y <- ((cv31-cv11)/cv11)*100
+text(x, y,labels = rivers, cex=1,col="#000000")
+
+y <- ((cv12-cv11)/cv11)*100
+text(x, y,labels = rivers, cex=1,col="#FF404040")
+
+y <- ((cv32-cv11)/cv11)*100
+text(x, y,labels = rivers, cex=1,col="#FF4040")
+
+legend("topright",legend=c("Connect","CC", "Connect+CC"),fill=c("#000000", "#FF404040", "#FF4040"),border =NA,bty="n")
+```
+
+
+# Results function of SR parameters
+
+```{r perc_alpha, echo=FALSE}
+median11=n.last(nReturns$`11`)
+median12=n.last(nReturns$`12`)
+median21=n.last(nReturns$`21`)
+median22=n.last(nReturns$`22`)
+median31=n.last(nReturns$`31`)
+median32=n.last(nReturns$`32`)
+
+#par(mfrow=c(1,2))
+
+x=alphaScript
+xlim=range(x)
+
+
+# ABUNDANCE
+ylim=c(-80,80)
+plot(NULL,xlim=xlim, ylim=ylim, ylab="Abundance (%)", xlab="alpha")
+abline(h=0,lty=3)
+
+y <- ((median31-median11)/median11)*100
+text(x, y,labels = rivers, cex=1,col="#000000")
+
+y <- ((median12-median11)/median11)*100
+text(x, y,labels = rivers, cex=1,col="#FF404040")
+
+y <- ((median32-median11)/median11)*100
+text(x, y,labels = rivers, cex=1,col="#FF4040")
+
+legend("topright",legend=c("Connect","CC", "Connect+CC"),fill=c("#000000", "#FF404040", "#FF4040"),border =NA,bty="n")
+
+```
+
+```{r CV_alpha, echo=FALSE}
+cv11 = cv.detrend(nReturns$`11`)
+cv12 = cv.detrend(nReturns$`12`)
+cv31 = cv.detrend(nReturns$`31`)
+cv32 = cv.detrend(nReturns$`32`)
+
+#par(mfrow=c(1,2))
+
+x=alphaScript
+xlim=range(x)
+
+# VARIATION
+ylim=c(-50,50)#range(y)
+plot(NULL,xlim=xlim, ylim=ylim, ylab="CV detrend (%)", xlab="alpha")
+abline(h=0,lty=3)
+
+y <- ((cv31-cv11)/cv11)*100
+text(x, y,labels = rivers, cex=1,col="#000000")
+
+y <- ((cv12-cv11)/cv11)*100
+text(x, y,labels = rivers, cex=1,col="#FF404040")
+
+y <- ((cv32-cv11)/cv11)*100
+text(x, y,labels = rivers, cex=1,col="#FF4040")
+
+legend("topright",legend=c("Connect","CC", "Connect+CC"),fill=c("#000000", "#FF404040", "#FF4040"),border =NA,bty="n")
+```

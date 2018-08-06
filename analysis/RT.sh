@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Parameters:
-npop=16
-nSIMUL=100 # Nb simulations 100
+npop=2
+nSIMUL=1 # Nb simulations 100
 Init=15 # Nb years to initialized 15
 Years=50 # Nb years simulated 50
 rPROP_RT=0.2 # proportion (population size) 20% de l'aire
@@ -58,8 +58,7 @@ cd $scenario # move directory to scenario folder
 # 2. SIMULATION
 echo "BEGINNING OF SIMULATION FOR $scenario"
 echo "PID du processus courant : $$"
-for s in $(seq 35 $nSIMUL) # scenario 3.1
-#for s in $(seq 31 $nSIMUL) # scenario 2.1
+for s in $(seq 1 $nSIMUL) # scenario 3.1
 
 do
 
@@ -135,16 +134,14 @@ STARTTIME=$(date +%s);
 SECONDS=0;
 declare -a simFAILED
 
-# Infinite loop:
 while : ; do
 	sleep 60;   # sleep for minute
-	# Break while if DIR no empty:
   [[ -n "$(ls -A $DIR 2>/dev/null)" ]] && break
 
 # check if Rout files contain "Execution halted"
   if grep -q "Execution halted" *.Rout;then 
       echo "Simulation $s failed"
-	      simFAILED+=("$s")
+	simFAILED+=("$s")
         nSIMUL=$(( $nSIMUL + 1 )) # add 1 simulation to nSimul
       for pid in "${PIDS[@]}"; do
         pkill -P "$pid" # kill grandchild processes
@@ -176,4 +173,6 @@ done
 
 echo "SIMULATIONS $simFAILED FAILED"
 echo "END OF SIMULATION"
+
+
 
