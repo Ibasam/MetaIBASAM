@@ -19,9 +19,12 @@ function (nYears, CC_Temp, CC_Amp, plotting = TRUE, window = FALSE, returning = 
     add_individuals(def$mswParam)
     go_winter()
     popa <- observe()
+    popr <- observe_redds()
     if (returning || success) {
         results <- observe()
+        repro <- observe_redds()
     }
+
     ratios <- matrix(NA, nrow = nYears, ncol = 4)
     winterM <- matrix(NA, nrow = nYears, ncol = 6)
     summerM <- matrix(NA, nrow = nYears, ncol = 18)
@@ -40,9 +43,13 @@ function (nYears, CC_Temp, CC_Amp, plotting = TRUE, window = FALSE, returning = 
         autumn()
         winter()
         popa <- observe()
+        popr <- observe_redds()
         if (returning || success) {
             results <- rbind(results, popa)
+            repro <- rbind(repro, popr)
         }
+
+        
         winterM[y, ] <- unlist(important.indicator.winter.population(popa))
         ally <- append.oneyear(popo, popa, ally)
         sptm <- rbind(sptm, proc.time() - ptm)
@@ -67,7 +74,7 @@ function (nYears, CC_Temp, CC_Amp, plotting = TRUE, window = FALSE, returning = 
         par(op)
     }
     if (returning) {
-        return(list(results,mm))
+        return(list(results,repro))
     }
     else {
         invisible(NULL)
