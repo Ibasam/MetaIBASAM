@@ -8,7 +8,7 @@ Ce projet consiste à évaluer  des stratégies de gestion en tenant compte des 
 - [ ] add CollectID in observe_redds() (/!\ CollecID = 0 for non migrants)
 
 - v0.03
-CollectID : numero de la popualtion d'origine
+- [ ] CollectID : numero de la popualtion d'origine
 ID: les derniers chiffres correspondent au numéro de popualtion (pour éviter les doublons lorsque un individu migrant arrive dans une population)
 /!\ L'ID des immigrants n'est pas conservé. Seul le CollecID et les derniers chiffres (CollecID).
 
