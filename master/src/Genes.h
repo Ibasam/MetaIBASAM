@@ -50,11 +50,12 @@ public:
 	Genes(Genemap gPercF, Genemap gG, Genemap gG_sea, Genemap gMocean_intercept,
 			Genemap gMocean_f_intercept, Genemap gMriver_intercept, Genemap gMriver_f_intercept_,
 			Genemap gSLmid_, Genemap gSalphaS_,	Genemap neutral_, 
-			unsigned ID, unsigned motherID, unsigned fatherID, 
+			unsigned ID, unsigned CollecID, unsigned motherID, unsigned fatherID,
 			double motherStrat, double fatherStrat, double age_river, double age_sea, 
 			unsigned nb_transmitted);
 	void updateID(unsigned ID);
 	unsigned ID()const{return ID_;};
+	unsigned CollecID()const{return CollecID_;};//edit mbuoro
 	double gPercF(){return invlogit(gPercF_.expression());};
 	double gG(){return gG_.expression();};
 	double gG_sea(){return gG_sea_.expression();};
@@ -91,7 +92,7 @@ protected:
 	Genemap neutral_;
 	
 /*info from individuals to restitute at repro*/
-	unsigned ID_,motherID_,fatherID_;
+	unsigned ID_,CollecID_,motherID_,fatherID_; // edit mbuoro
 	double motherStrat_,fatherStrat_;
 	double age_river_,age_sea_;
 	unsigned nb_transmitted_;

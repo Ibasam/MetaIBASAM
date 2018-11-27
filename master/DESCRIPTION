@@ -1,8 +1,8 @@
 Package: metaIbasam
 Type: Package
 Title: Individual Based Atlantic Salmon Model (metapopulation version)  
-Version: 0.0.3
-Date: 2018-04-9
+Version: 0.0.4
+Date: 2018-11-19
 Author: Cyril Piou & Julien Papaix & Mathieu Buoro
 Maintainer: Cyril Piou <cyril.piou@cirad.fr>
 Description: Functions wrapping the metapopulation version of Ibasam, an IBM of Salmo salar

@@ -1205,7 +1205,7 @@ void Collection::immigrants(const char* filenameImport){
 				if(line1s == 11){
 					genes=Genes(iGenemaps[0],iGenemaps[1],iGenemaps[2],iGenemaps[3],iGenemaps[4],
 								iGenemaps[5],iGenemaps[6],iGenemaps[7],iGenemaps[8],iGenemaps[9],
-								0,inputVar3[0],inputVar3[1],inputVar[10],inputVar[11],inputVar[5],inputVar[6],inputVar3[2]);
+								0,inputVar[12],inputVar3[0],inputVar3[1],inputVar[10],inputVar[11],inputVar[5],inputVar[6],inputVar3[2]);
 					// create individual and push_back
 					Salmon o(inputVar[0],inputVar[1],lwa_,lwb_,lwa_sea_,lwb_sea_,inputVar2[0],inputVar2[1],inputVar2[2],inputVar2[3],inputVar2[4],
 									b_allom_, smolt1_activity_, winterLMG_activity_,smoltN_activity_,inputVar[2],inputVar[3],inputVar[4],
@@ -1297,17 +1297,19 @@ void Collection::observe_redds(double *allredds)
 			ind= _N_COL_REDDS_ * i;
 			allredds[ind]=redds.at(i).Neggs();
 			allredds[ind+1]=redds.at(i).Mean_egg_W();
-			allredds[ind+2]=static_cast<double>(redds.at(i).dateRepro());
-			allredds[ind+3]=static_cast<double>(redds.at(i).female.ID());
-			allredds[ind+4]=redds.at(i).female.strategy();
-			allredds[ind+5]=static_cast<double>(redds.at(i).size());
-			allredds[ind+6]=redds.at(i).percentStrategy(0);//stands for 0.0
-			allredds[ind+7]=redds.at(i).percentStrategy(1);
-			allredds[ind+8]=redds.at(i).percentStrategy(2);
-			allredds[ind+9]=redds.at(i).percentStrategy(11);
-			allredds[ind+10]=redds.at(i).percentStrategy(12);
-			allredds[ind+11]=redds.at(i).percentStrategy(21);
-			allredds[ind+12]=redds.at(i).percentStrategy(22);//stands for 2.2
+			allredds[ind+2]=static_cast<double>(at(i).year());
+			allredds[ind+3]=static_cast<double>(redds.at(i).dateRepro());
+			allredds[ind+4]=static_cast<double>(redds.at(i).female.CollecID());
+			allredds[ind+5]=static_cast<double>(redds.at(i).female.ID());
+			allredds[ind+6]=redds.at(i).female.strategy();
+			allredds[ind+7]=static_cast<double>(redds.at(i).size());
+			allredds[ind+8]=redds.at(i).percentStrategy(0);//stands for 0.0
+			allredds[ind+9]=redds.at(i).percentStrategy(1);
+			allredds[ind+10]=redds.at(i).percentStrategy(2);
+			allredds[ind+11]=redds.at(i).percentStrategy(11);
+			allredds[ind+12]=redds.at(i).percentStrategy(12);
+			allredds[ind+13]=redds.at(i).percentStrategy(21);
+			allredds[ind+14]=redds.at(i).percentStrategy(22);//stands for 2.2
 
 		}
 }

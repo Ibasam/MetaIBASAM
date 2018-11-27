@@ -32,7 +32,7 @@
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/shared_ptr.hpp>
 
-static const unsigned _N_COL_REDDS_ = 13;
+static const unsigned _N_COL_REDDS_ = 15;
 static const unsigned _N_COL_DETAILS_REDDS_ = 3;
 
 using namespace std;
@@ -183,7 +183,7 @@ private:
 			double n_max, double Loss_fat);
 	void select_parr_males(Salmon *female, vector<unsigned> *males_ID,
 					double n_max, double Loss_fat);
-	unsigned CollecID_;
+	unsigned CollecID_; // edit mbuoro
 
 
 	unsigned check_nloci(double nloci);

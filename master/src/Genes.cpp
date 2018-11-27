@@ -58,6 +58,7 @@ Genes::Genes(double gPercF_mean, double gPercF_sd,unsigned gPercF_nloci,double g
 	neutral_(gMriver_intercept_nloci,1.0,0.,1.0)
 {
 	ID_=0;
+  CollecID_=0;
 	motherID_=0;
 	fatherID_=0;
 	motherStrat_=0;
@@ -81,6 +82,7 @@ Genes::Genes(Genes *mother, Genes *father)
 	gSalphaS_ = reproduction(&(mother->gSalphaS_),&(father->gSalphaS_));
 	neutral_=reproduction(&(mother->neutral_),&(father->neutral_));
 	ID_=0;
+	CollecID_=0;//edit mbuoro
 	motherID_=mother->ID();
 	fatherID_=father->ID();
 	motherStrat_=mother->strategy();//floor(mother->AgeSea()) + floor(mother->AgeRiver())*0.1;
@@ -90,7 +92,7 @@ Genes::Genes(Genes *mother, Genes *father)
 Genes::Genes(Genemap gPercF, Genemap gG, Genemap gG_sea, Genemap gMocean_intercept,
 			Genemap gMocean_f_intercept, Genemap gMriver_intercept, Genemap gMriver_f_intercept,
 			Genemap gSLmid, Genemap gSalphaS,	Genemap neutral, 
-			unsigned ID, unsigned motherID, unsigned fatherID, 
+			unsigned ID, unsigned CollecID, unsigned motherID, unsigned fatherID,
 			double motherStrat, double fatherStrat, double age_river, double age_sea, 
 			unsigned nb_transmitted)
 {
@@ -105,6 +107,7 @@ Genes::Genes(Genemap gPercF, Genemap gG, Genemap gG_sea, Genemap gMocean_interce
 	gSalphaS_=gSalphaS;
 	neutral_=neutral;
 	ID_=ID;
+	CollecID_=CollecID;
 	motherID_=motherID;
 	fatherID_=fatherID;
 	motherStrat_=motherStrat;
@@ -152,6 +155,7 @@ Genes::Genes(double gPercF_mean, double gPercF_sd,
 	neutral_(0.,1.0)
 {
 	ID_=0;
+  CollecID_=0;// edit mbuoro
 	motherID_=0;
 	fatherID_=0;
 	motherStrat_=0;
