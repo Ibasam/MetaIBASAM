@@ -80,19 +80,19 @@ Salmon::Salmon(double W, double F, double lwa, double lwb,double lwa_sea, double
 	mPercF_ = pPercF_ + MaturationPercF;
 	aPercF_ = (mature)? mPercF_ : pPercF_;
 	popPercF_ = popPercF;
-	myassert(popPercF_<1. && popPercF_>0.);
+	myassert(popPercF_<1. && popPercF_>0.,"PopPercF should be between 0 & 1 !");
 	F_ = F;
 	F_maturing_memory_=F;
 	DW_ = 0.0;
-	myassert(W_>F_);
+	myassert(W_>F_,"Wrong calculation of W and F for initialization of individual!");
 	L_ = exp(a_ + b_ * log(W_ - F_) );
 	L0_=L_;
 	Wini_=Wini;
-	myassert(Wini_>0.);
+	myassert(Wini_>0.,"Wrong Wini for initialization of individual!");
 	Lini_= exp(lwa_ + lwb_ * log(Wini_) );
-	myassert(Lini_>0.);
+	myassert(Lini_>0.,"Wrong Lini for initialization of individual!");
 	b_allom_=b_allom;
-	myassert(b_allom_!=0.);
+	myassert(b_allom_!=0.,"Wrong b_allom for initialization of individual!");
 	//edit Julien Papaix, parameters and computation of individual penalty for 
 	//survival depending on growth capacity pG_ and pG_sea_:
 	
@@ -115,7 +115,7 @@ Salmon::Salmon(double W, double F, double lwa, double lwb,double lwa_sea, double
 		pGres_=0;
 		coefSURV_=1.;
 	}
-	myassert(coefSURV_>0. && coefSURV_<=1.);
+	myassert(coefSURV_>0. && coefSURV_<=1.,"Wrong coefSURV_ computation for initialization of individual!");
 	
 	//Sea tradeoff:
 	if(maxSEA>0.){
@@ -136,7 +136,7 @@ Salmon::Salmon(double W, double F, double lwa, double lwb,double lwa_sea, double
 		pG_seares_=0.;
 		coefSURVsea_=1.;
 	}
-	myassert(coefSURVsea_>0. && coefSURVsea_<=1.); 
+	myassert(coefSURVsea_>0. && coefSURVsea_<=1.,"Wrong coefSURVsea_ computation for initialization of individual!"); 
 	//end edit Julien Papaix
 	
 	IDs++;
@@ -183,10 +183,10 @@ Salmon::Salmon(double W, double F, double lwa, double lwb,double lwa_sea, double
 	check_PRMN_param();
 	myGenes_.updateGene(age_river_,age_sea_,Nreprod_thisyear_);
 
-	myassert(exp(lwa_sea_)!=0.);
-	myassert(exp(pG_sea_)*Wmax_>0.);
-	myassert(exp(lwa_sea_)!=0.);
-	myassert(lwb_sea_!=0.);
+	myassert(exp(lwa_sea_)!=0.,"Wrong initialization of individual!");
+	myassert(exp(pG_sea_)*Wmax_>0.,"Wrong initialization of individual!");
+	myassert(exp(lwa_sea_)!=0.,"Wrong initialization of individual!");
+	myassert(lwb_sea_!=0.,"Wrong initialization of individual!");
 
 }
 
@@ -216,7 +216,7 @@ void Salmon::growS(double InfluenceSeaM,double InfluenceSeaSd, double OmegaS, do
 		DW_ = W_ - W0_;
 		F_ = F_ + DW_ * aPercF_;
 		Wm = (W_ - F_)/(1 - popPercF_);
-		myassert(Wm>0.);
+		myassert(Wm>0.,"Wrong computation of Wm (negative) for individual!");
 		if(smolt_)
 			L_ = max(L_,exp(lwa_sea_ + lwb_sea_* log(Wm) ) );
 		else
@@ -240,12 +240,12 @@ void Salmon::marine_growth(double InfluenceSeaM,double InfluenceSeaSd,double nb_
 	double Wm, survm=0.;
 	for(double d=0.;d<nb_days;++d)
 	{
-		myassert(W_>0.);
+		myassert(W_>0.,"Wrong computation of W (negative) for individual!");
 		DW_ =  K_ * W_ * log(exp(pG_sea_)*Wmax_/W_) * rnorm(InfluenceSeaM,InfluenceSeaSd);//marine conditions effects
 		W_ = W_ + DW_;
 		F_ = F_ + DW_ * aPercF_;
 		Wm = (W_ - F_)/(1 - popPercF_);
-		myassert(Wm>0.);
+		myassert(Wm>0.,"Wrong computation of W (negative) for individual!");
 		L_ = max(L_,exp(lwa_sea_ + lwb_sea_* log(Wm) ) );
 		survm = min(1.,max(0.,1.-RickA_*pow((L_/exp(lwa_sea_)),RickB_/lwb_sea_))); //mortality L dependent!
 		if(d>1.)
@@ -259,7 +259,7 @@ void Salmon::marine_growth(double InfluenceSeaM,double InfluenceSeaSd,double nb_
 			}
 		}
 	}
-	myassert(P_survival_<1.);
+	myassert(P_survival_<1.,"Wrong computation of P_survival for individual!");
 	age_sea_ += nb_days/365.0;
 }
 
@@ -297,7 +297,7 @@ void Salmon::check_PRMN_param()
  * ****************************************/
 double Salmon::projectionF(double nDaysWindows, double nDaysProjection)
 {
-	myassert(nDaysWindows>0.);
+	myassert(nDaysWindows>0.,"Wrong nDaysWindows!");
 	double realizedFgrowthRate = (F_ - F_maturing_memory_)/nDaysWindows;
 	return(F_ + nDaysProjection * realizedFgrowthRate);
 }
@@ -322,7 +322,7 @@ void Salmon::check_spring_maturation_river()
 		mature_=true;
 		aPercF_=mPercF_;
 		W0_ = (W_ - F_)/(1 - popPercF_);
-		myassert(W0_>0.);
+		myassert(W0_>0.,"Wrong computation of W0 (negative) for maturation!");
 		L_ = max(L0_,exp(lwa_ + lwb_* log(W0_) ) );
 	}else{
 		reinitialize_maturation();
@@ -391,7 +391,7 @@ void Salmon::migration() //suppose an upstream verification of decision to migra
 		at_sea_=true;
 		if(smolt_)
 		{
-			myassert(L_>0.);
+			myassert(L_>0.,"negative size migrating salmon problem!");
 			smolt_=false;
 			aPercF_=pPercF_;
 			specific_growth_river_ = ((log(L_) - log(Lini_))/age_river_) * 100.; //Jonsson et al. 1996
@@ -458,7 +458,7 @@ double Salmon::Neggs(double Mean_egg_W_pop,double Min_egg_W_pop,double Max_egg_W
 {
 	//Mean_egg_W_ = max( Min_egg_W_pop, min( Max_egg_W_pop, exp( WtoWegg_a*log(W_) - WtoWegg_b * specific_growth_river_ + WtoWegg_c)/10000. ) );   //Jonsson et al 1996
 	Mean_egg_W_ = max( Min_egg_W_pop, min( Max_egg_W_pop, exp( WtoWegg_a*log(W_)  + WtoWegg_c)/10000. ) );   //Jonsson et al 1996
-	myassert(W_>0.);
+	myassert(W_>0.,"Negative weight of individual!");
 	double potential_Neggs = exp(WtoNegg_a * log(W_) + WtoNegg_b); //Jonsson et al 1996
 	//double WeggsTot= potential_Neggs * Mean_egg_W_pop;  //Jonsson et al. 1996
 	Neggs_ = floor(potential_Neggs);//floor(WeggsTot / Mean_egg_W_);

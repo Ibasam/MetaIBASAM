@@ -23,5 +23,6 @@
 #define MYASSERT_H_
 
 void myassert(bool b);
+void myassert(bool b,const char * text);
 
 #endif /* MYASSERT_H_ */

@@ -12,8 +12,8 @@ Metapopulation version of Ibasam
 \tabular{ll}{
 Package: \tab metaIbasam\cr
 Type: \tab Package\cr
-Version: \tab 0.0.2\cr
-Date: \tab 2018-02-09\cr
+Version: \tab 0.0.5\cr
+Date: \tab 2019-11-01\cr
 License: \tab GPL2\cr
 }
 }

@@ -32,7 +32,7 @@ Genemap::Genemap(unsigned nloci,double heritability, double mean, double sd)
 	sd_=sd;
 	if(heritability_>0.)
 	{
-		myassert(nloci>0);
+		myassert(nloci>0,"Wrong nloci!");
 		nloci_ = nloci;
 		br1.resize(nloci_);
 		br2.resize(nloci_);
@@ -62,8 +62,8 @@ Genemap::Genemap(dbitset b1, dbitset b2,double heritability,double mean, double 
 		nloci_ = b1.size();
 		br1=b1;
 		br2=b2;
-		myassert(nloci_>0);
-		myassert(br2.size()==br1.size());
+		myassert(nloci_>0,"Wrong nloci!");
+		myassert(br2.size()==br1.size(),"How come there are different sizes of locus!!!");
 		initialize_lims();
 	}
 }

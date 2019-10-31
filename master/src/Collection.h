@@ -89,7 +89,7 @@ public:
 	void mortality_density_size(double nb_days);
 	void emergence(Environment * Env);
 	unsigned Nredds() {return redds.size();}
-	void observe_redds(double *allredds);
+	void observe_redds(double *allredds, Environment * Env);
 	vectorSalmon fishing(double *fishParam);
 	unsigned n_details_one_redd(long motherID);
 	void details_one_redd(double *inforedd,long motherID);

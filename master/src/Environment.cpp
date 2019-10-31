@@ -52,9 +52,9 @@ void Environment::clean_vectors()
 	days.erase(days.begin(),days.end());
 	temperatures.erase(temperatures.begin(),temperatures.end());
 	logRelativeFlows.erase(logRelativeFlows.begin(),logRelativeFlows.end());
-	myassert(days.empty());
-	myassert(temperatures.empty());
-	myassert(logRelativeFlows.empty());
+	myassert(days.empty(),"not well clean");
+	myassert(temperatures.empty(),"not well clean");
+	myassert(logRelativeFlows.empty(),"not well clean");
 }
 
 void Environment::load(double *daysv, double *tempv, double *logrelflowv, double *n)
@@ -138,8 +138,8 @@ void Environment::setup_parameters(double *Parameters)
 	logCritSupFlow_=Parameters[15];
 	beta_redd_flow_survival_=Parameters[16];
 
-	myassert(river_size_>0.);
-	myassert(beta_dens_effect_>0.);
+	myassert(river_size_>0.,"river size negative!!");
+	myassert(beta_dens_effect_>0.,"parameter of beta_dens_effect is negative!");
 
 }
 
@@ -188,9 +188,9 @@ double Environment::OmegaSinverse(double nb_days)
 
 double Environment::DensEffect(double nb_days,double effective_density)
 {
-	double river_effective_density = effective_density / (river_size_ * 1000000); //Note: effD is in mm², river_size is in m²
+	double river_effective_density = effective_density / (river_size_ * 1000000); //Note: effD is in mmï¿½, river_size is in mï¿½
 	double denseffect =1 + beta_dens_effect_ * river_effective_density * IWUH(nb_days);
-	myassert(denseffect!=0.);
+	myassert(denseffect!=0.,"denseffect is 0?!?");
 	denseffect = 1 /denseffect ;
 	bool winter;
 	if(actual_date_ + nb_days < 91.0 || actual_date_ + nb_days>273.0 )
@@ -198,20 +198,20 @@ double Environment::DensEffect(double nb_days,double effective_density)
 		else
 			winter=false;
 	denseffect = winter ? 1. : denseffect;
-	myassert(denseffect>=0.);
-	myassert(denseffect<=1.);
+	myassert(denseffect>=0.,"denseffect is not >= 0 ?!?");
+	myassert(denseffect<=1.,"denseffect is not <=1 ?!?");
 	return(denseffect);
 }
 
 double Environment::IWUH(double nb_days)
 {
-	myassert(nb_days>0.);
+	myassert(nb_days>0.,"nb_days should be positive!");
 	double iwuh=0.;
 	unsigned index_now = (unsigned)index_environment_;
 	unsigned index_end = (unsigned)(index_environment_ + nb_days);
 	for(unsigned j=index_now;j<index_end;++j)
 	{
-		myassert(exp(logRelativeFlows.at_torus(j))!=0);
+		myassert(exp(logRelativeFlows.at_torus(j))!=0,"zero logarithm problem??");
 		iwuh+=max(1.0,Critical_RelativeFlow_/exp(logRelativeFlows.at_torus(j)));
 	}
 	iwuh/=nb_days;
@@ -228,9 +228,9 @@ double Environment::OmegaS()
 
 double Environment::DensEffect(double effective_density)
 {
-	double river_effective_density = effective_density / (river_size_ * 1000000); //Note: effD is in mm², river_size is in m²
+	double river_effective_density = effective_density / (river_size_ * 1000000); //Note: effD is in mmï¿½, river_size is in mï¿½
 	double denseffect =1 + beta_dens_effect_ * river_effective_density * IWUH();
-	myassert(denseffect!=0.);
+	myassert(denseffect!=0.,"Again! denseffect should be !=0");
 	denseffect = 1 /denseffect ;
 	bool winter;
 	if(actual_date_ < 91.0 || actual_date_ >273.0 )
@@ -244,7 +244,7 @@ double Environment::DensEffect(double effective_density)
 double Environment::IWUH()
 {
 	unsigned index_now = (unsigned)index_environment_;
-	myassert(exp(logRelativeFlows.at_torus(index_now))!=0.);
+	myassert(exp(logRelativeFlows.at_torus(index_now))!=0.,"zero logarithm problem????");
 	double iwuh=max(1.0,Critical_RelativeFlow_/exp(logRelativeFlows.at_torus(index_now)));
 	return(iwuh);
 }
@@ -270,7 +270,7 @@ double Environment::survival_redd(unsigned DateRepro, unsigned DateEmergence)
 		}
 		nprob = fmax(1.,nprob);
 		double ndays = static_cast<double>(DateEmergence-DateRepro);
-		myassert(ndays>0.);
+		myassert(ndays>0.,"ndays should be positive, come on!");
 		surv*=rbeta(beta_noise_redd_survival_,beta_noise_redd_survival_*beta_redd_flow_survival_*nprob/ndays);
 	}else{							//only temperature impact on survival
 		for(unsigned j=DateRepro;j<DateEmergence;++j)

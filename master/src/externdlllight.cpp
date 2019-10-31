@@ -38,9 +38,13 @@ static vectorSalmon FishedCollec;
 
 void myassert(bool b)
 {
-	if(!b) Rf_error("Unexpected error in metaIbasam... closing.");
+	if(!b) Rf_error("Unexpected error in metaIbasam...bouhoou... closing.");
 }
 
+void myassert(bool b,const char * text)
+{
+	if(!b) Rf_error(text);
+}
 
 extern "C" {
 
@@ -198,7 +202,7 @@ extern "C" {
 
 	void observe_redds(double *allredds)
 	{
-		MyCollec.observe_redds(allredds);
+		MyCollec.observe_redds(allredds, &MyEnv);
 	}
 
 	void n_details_one_redd(long *N,long *motherID)

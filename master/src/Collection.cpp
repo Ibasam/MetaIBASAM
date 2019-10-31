@@ -220,7 +220,7 @@ void Collection::setup_collection_parameters(double *colParam)
 	if(Repro_Success_>0)
 		memory_success_.resize(0,0);
 
-	myassert(colParam[j+1]==25071979.);
+	myassert(colParam[j+1]==25071979.,"Parameters missing at setup!");
 }
 
 
@@ -426,7 +426,7 @@ double Collection::effective_density()
 	for (unsigned i=0; i<size();++i)
 		if(at(i).condition(inriver) && (! at(i).condition(anadromous)))
 			result += pow(at(i).L(),exponent_effective_size_);
-	myassert(result>=0.);
+	myassert(result>=0., "Negative effective density!");
 	return(result);
 
 }
@@ -437,7 +437,7 @@ double Collection::effective_density_more1()
 	for (unsigned i=0; i<size();++i)
 		if(at(i).condition(inriver) && (! at(i).condition(anadromous)) && at(i).AgeRiver()>1.)
 			result += pow(at(i).L(),exponent_effective_size_);
-	myassert(result>=0.);
+	myassert(result>=0.,"Negative effective density!");
 	return(result);
 
 }
@@ -718,7 +718,7 @@ void Collection::emergence(Environment * Env)//assume to be at day 90 (31st marc
 		{
 			emergingN.clear();
 			Wm = Wms.at(i);
-			myassert(Wm>0.);
+			myassert(Wm>0.,"Negative weight of emergent stored in redd!");
 			Wsd = Wsds.at(i);
 			for(j = 0; j<redds.at(i).size(); ++j)
 			{
@@ -727,7 +727,7 @@ void Collection::emergence(Environment * Env)//assume to be at day 90 (31st marc
 				emergingN.push_back(static_cast<unsigned>(N));
 				indm++;
 			}
-			myassert(emergingN.size()==redds.at(i).size());
+			myassert(emergingN.size()==redds.at(i).size(),"Wrong number of eggs computation somehow!");
 			update_memory_success_repro((redds.at(i)),emergingN,Env->actual_year());
 		}
 
@@ -735,7 +735,7 @@ void Collection::emergence(Environment * Env)//assume to be at day 90 (31st marc
 		for(i = 0; i<redds.size(); ++i)
 		{
 			Wm = Wms.at(i);
-			myassert(Wm>0.);
+			myassert(Wm>0.,"weight of emergent stored in redd!");
 			Wsd = Wsds.at(i);
 			for(j = 0; j<redds.at(i).size(); ++j)
 			{
@@ -824,7 +824,7 @@ void Collection::reproduce(Environment * Env)//assume to be at day 320 (16th nov
 				sumWmales += pow(male->W(),Exponent_W_fert_males_);
 				sumWparrs += pow(male->W(),Exponent_W_fert_males_);
 			}
-			myassert(sumWmales>0.);
+			myassert(sumWmales>0.,"Negative sum of weight of males at reproduction!");
 			// attribute a number of egg to each male
 			for(unsigned i=0; i<female->selected_male_size();++i)
 			{
@@ -907,7 +907,7 @@ void Collection::select_anadromous_males(Salmon *female, vector<unsigned> *males
 			}else{ // there is more available than selected
 				// check the smallest one
 				minpss = *min_element(weight_males.begin(),weight_males.end());
-				myassert(minpss>0.);
+				myassert(minpss>0., "negative weight of selected male!");
 				//=========================================================
 				// create the vector of unsigned corresponding to the ID of males
 				// with repetition corresponding to their probability of being selected
@@ -937,7 +937,7 @@ void Collection::select_anadromous_males(Salmon *female, vector<unsigned> *males
 					}
 				}
 			}
-			myassert(female->selected_male_size() == NBselect);
+			myassert(female->selected_male_size() == NBselect,"Wrong number of selected males!");
 		}
 	}else{
 		//"The female could not get any big male"
@@ -999,7 +999,7 @@ void Collection::select_parr_males(Salmon *female, vector<unsigned> *males_ID, d
 				}
 			}
 		}
-		myassert(female->selected_parr_size() == static_cast<unsigned>(  NBselect));
+		myassert(female->selected_parr_size() == static_cast<unsigned>(  NBselect),"Wrong number of parr participating in fertilization!");
 	}else{
 		//"The female could not get any parr male"
 	}
@@ -1288,7 +1288,7 @@ void vectorSalmon::observe(double * allind)
 		}
 }
 
-void Collection::observe_redds(double *allredds)
+void Collection::observe_redds(double *allredds, Environment * Env)
 {
 	unsigned ind;
 	if(redds.size()>0)
@@ -1297,7 +1297,7 @@ void Collection::observe_redds(double *allredds)
 			ind= _N_COL_REDDS_ * i;
 			allredds[ind]=redds.at(i).Neggs();
 			allredds[ind+1]=redds.at(i).Mean_egg_W();
-			allredds[ind+2]=static_cast<double>(at(i).year());
+			allredds[ind+2]=Env->actual_year();
 			allredds[ind+3]=static_cast<double>(redds.at(i).dateRepro());
 			allredds[ind+4]=static_cast<double>(redds.at(i).female.CollecID());
 			allredds[ind+5]=static_cast<double>(redds.at(i).female.ID());

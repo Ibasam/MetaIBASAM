@@ -101,7 +101,7 @@ double rpoisson(double lambda)// random number (Knuth):
 
 double rweibull(double shape, double scale)
 {
-	myassert(shape!=0.);
+	myassert(shape!=0.,"a weibull parameter should be !=0");
 	double rw = rndv();
 	while(rw == 0.)
 		rw = rndv();
@@ -321,7 +321,7 @@ double invlogit(double x) {
 }
 
 double logit(double x) {
-	myassert(x<1. && x>0.);
+	myassert(x<1. && x>0.,"a probability is between 0 and 1 normally...");
 	return log(x / (1. -x));
 }
 
@@ -424,7 +424,7 @@ double rbeta(double aa, double bb)
 
     if (!R_FINITE(bb))
     	return 0.0;*/
-    myassert(aa>0. && bb>0.);
+    myassert(aa>0. && bb>0.,"rbeta parameters should be positive!");
 
     /* Test if we need new "initializing" */
     qsame = (olda == aa) && (oldb == bb);
@@ -508,7 +508,7 @@ double rbeta(double aa, double bb)
 
 double growW(double W, double omega, double b_allom)
 {
-	myassert(b_allom!=0.);
+	myassert(b_allom!=0.,"exponential parameter b_allom should be != 0");
 	return pow( pow(W,b_allom) +  b_allom * omega / 100 , 1/ b_allom);
 }
 
