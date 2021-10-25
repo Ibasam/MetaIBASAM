@@ -1,33 +1,43 @@
-MetaIBASAM: Adaptation des stratégies de gestion face au changement climatique :  influence des flux migratoires entre populations
+MetaIBASAM:  A demo-genetic agent-based model to simulate spatially structured salmon populations
 
-Ce projet consiste à évaluer  des stratégies de gestion en tenant compte des interconnections entre populations exploitées (via des flux migratoires) et des effets synergiques de changements environnementaux, pêches sélectives (temporelles vs spatiales) sur la dynamique des populations.
+MetaIbasam is an extension of the existing IBASAM model (https://github.com/Ibasam/IBASAM/wiki) by incorporating a dispersal process to describe Atlantic salmon metapopulation and its eco-evolutionary dynamics. MetaIBASAM allows an investigation of the consequences of dispersal on local populations and network dynamics at the demographic, phenotypic, and genotypic levels. More generally, it allows to explore eco-evolutionary dynamics by taking into account complex interactions between ecological and evolutionary processes (plasticity, genetic adaptation and dispersal), feedbacks (e.g. genetic <-> demography) and trade-offs (e.g. growth vs survival). By doing so, one can investigate responses to changing environments and alternative management strategies.
 
 
 # NEWS
-- v0.04
+
+- v0.0.6
+- [ ] bug fixation observe_redds
+- [ ] waterflow now at natural scale
+
+- v0.0.5
+- [ ] add observe_redds
+
+- v0.0.4
 - [ ] add CollectID in observe_redds() (/!\ CollecID = 0 for non migrants)
 
-- v0.03
-- [ ] CollectID : numero de la popualtion d'origine
-ID: les derniers chiffres correspondent au numéro de popualtion (pour éviter les doublons lorsque un individu migrant arrive dans une population)
-/!\ L'ID des immigrants n'est pas conservé. Seul le CollecID et les derniers chiffres (CollecID).
+- v0.0.3
+- [ ] CollectID : number of the population of origin
+- [ ] Indivivual ID: the last digits correspond to the population number (to avoid duplicates when a migrant individual arrives in a population. Note that, the ID of immigrants is not kept. Only the CollecID and the last digits (CollecID).
+
+- v0.0.2
+- [ ] add a pause function to wait for migrants files from all populations
+
+- v0.0.1
+- [ ] add the dispersal process
 
 
 # COLLABORATORS
-Mathieu Buoro (INRA, ECOBIOP)
+Mathieu Buoro (INRAE, UMR ECOBIOP)
 Cyril Piou (CIRAD, Montpellier)
-Etienne Prevost (INRA, UMR ECOBIOP)
+Etienne Prevost (INRAE, UMR ECOBIOP)
+Amaïa Lamarins (INRAE, UMR ECOBIOP)
 
 # STRUCTURE  
 
-- master/ : contains files and functions of the package  
-- myProjects/: contains scripts to run metaIBASAM  
-  -> tmp/ : contains the temporary files (migrants files, results,...)  
-  -> run.sh: bash script to run metaIBASAM with multiple populations (each populations running on different processes)  
-- cleaning.sh: bash script to clean temporary files (into R/ and tmp/ folders)  
+- master/ : contains source files and R functions of the package  
 
 # Acknowledgement
-This project is funded by AFB (French Agency for Biodiversity) and INRA.
+This project is funded by OFB (French Office for Biodiversity) and INRAE via the OFB-INRAE-Institut Agro-UPPA cluster for the management of migrating fish in their environment.
 
 
-Contact: mathieu.buoro@inra.fr
+Contact: mathieu.buoro@inrae.fr

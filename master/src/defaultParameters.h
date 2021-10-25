@@ -16,7 +16,7 @@
  *
  *  Any questions or remarks, please contact Cyril Piou at:
  *
- *  cyril.piou<at>cirad.fr
+ *  mathieu.buoro@inrae.fr
  *
  */
 #ifndef DEFAULTPARAMETERS_H_
@@ -35,11 +35,12 @@ static double envParamDef[]={//Parameters for setup_environment (should stay con
 6.,//Tlr 
 24.5,//Tur
 
-0.2,//	Relative Critical_flow = Critical flow/module (Critical flow reinforcing density-dependent effect on growth) -> cFgi
+//0.2,//	Relative Critical_flow = Critical flow/module (Critical flow reinforcing density-dependent effect on growth) -> cFgi
+0.2*4,//	Relative Critical_flow = Critical flow/module (Critical flow reinforcing density-dependent effect on growth) -> cFgi
 
 142.7,// Density-dependent growth regulating parameter -> betadens
 
-200811*0.25,//m² of equivalent fast running water... 200811m² for Scorf, given by Etienne.
+200811*0.25,//m? of equivalent fast running water... 200811m? for Scorf, given by Etienne.
 
 //Parameters to relate water temperature to egg survival 
 0.00019346,  //aRt
@@ -50,8 +51,8 @@ static double envParamDef[]={//Parameters for setup_environment (should stay con
 //Parameters to relate water flow to egg survival 
 0.01, //aF
 //Critical flow influencing on egg survival 
-log(0.1),  //logCritInfFlow_ , log of relative flow that create too low water level for redds in river and influence survival -> cFi
-log(7.),    //logCritSupFlow_ , log of relative flow that create too high water level for redds in river and influence survival -> cFs
+0.1*4,//log(0.1),  //logCritInfFlow_ , log of relative flow that create too low water level for redds in river and influence survival -> cFi
+7*0.4,//log(7.),    //logCritSupFlow_ , log of relative flow that create too high water level for redds in river and influence survival -> cFs
 100.//bF
 };
 
@@ -60,7 +61,7 @@ log(7.),    //logCritSupFlow_ , log of relative flow that create too high water 
 
 
 static double gParamDef[]={//Parameters for add_individuals (should vary to initialize a real population and not only a cohort)
-round(200811*0.25*8*0.15),// N -> here set given that we get ~3% of emerging parrs reaching smolt run stage and we assume a 0.45% from eggs to smolt survival (0.15=0.0045/0.03), the conservation limit of egg deposition is 4.75eggs/m², here assumed to be the limit of conservation for Scorff
+round(200811*0.25*8*0.15),// N -> here set given that we get ~3% of emerging parrs reaching smolt run stage and we assume a 0.45% from eggs to smolt survival (0.15=0.0045/0.03), the conservation limit of egg deposition is 4.75eggs/m?, here assumed to be the limit of conservation for Scorff
 
 0.2,// Wmean        -> to get ~25mm of length
 0.1,//0.01,// Wsd          -> 0.087estimated from Scorf data MCMC 09032009
@@ -159,19 +160,20 @@ static double colParamDef[]={     //Parameters for setup_collection
 0.188,//smoltN_activity         TO SEARCH
 
 ////////Survival in River    13 --> 21
-0.9841606,//SP0~5.3%, adjusted from an emergence to smolt of 3% and with SP1S given... daily survival prob parr 0 to 0.5
-0.9914398, //SP1, daily survival prob parr 0.5 to 1.0 -> Buoro (estimated over 6months)
-0.9967923, //SP1S, daily survival prob smolts 0.5 to run -> Buoro (estimated over 6months)
-0.9863295, //SP1M, daily survival prob parr mature 0.5 to 1.0 -> Buoro (estimated over 6months)
-0.9911798, //SPnM, daily survival prob parr mature n.5 to n+1 -> Buoro (estimated over 6months)
-0.99775,//SPn, daily survival prob parr any other situations -> Buoro (estimated over 6months)
+0.986621,//SP0~5.3%, adjusted from an emergence to smolt of 3% and with SP1S given... daily survival prob parr 0 to 0.5
+0.9939184, //SP1, daily survival prob parr 0.5 to 1.0 -> Buoro (estimated over 6months)
+0.9987859, //SP1S, daily survival prob smolts 0.5 to run -> Buoro (estimated over 6months)
+0.9883022, //SP1M, daily survival prob parr mature 0.5 to 1.0 -> Buoro (estimated over 6months)
+0.9931622, //SPnM, daily survival prob parr mature n.5 to n+1 -> Buoro (estimated over 6months)
+0.9997455,//SPn, daily survival prob parr any other situations -> Buoro (estimated over 6months)
 //edit Julien Papaix:
-50,//maxRIV maximum growth rate, aded for the incorporation of trade-off growth/survival
-10,//sigRIV shape of the trade-off function
-921.6,//kappaRIV shape of the trade-off function
+// If maxRIV <0 or maxSEA <0, NO trade-offs
+5,//maxRIV maximum growth rate, aded for the incorporation of trade-off growth/survival
+3.7,//sigRIV shape of the trade-off function
+0.001,//kappaRIV shape of the trade-off function
 50,//maxSEA maximum growth rate, aded for the incorporation of trade-off growth/survival
-10,//sigSEA shape of the trade-off function
-921.6,//kappaSEA shape of the trade-off function
+100,//sigSEA shape of the trade-off function
+0.001,//kappaSEA shape of the trade-off function
 
 ////////Growth at Sea    25 --> 27
 0.003057074, //K, daily speed parameter of gompertz growth for ocean life, adjusted to Scorff Data
@@ -226,13 +228,13 @@ static double colParamDef[]={     //Parameters for setup_collection
 ////////Growth in river       61 -->   64
 0.0 ,// gGmean       center of the lognormal -> estimated
 0.2,// gGsd        small variance at start -> estimated
-0.9,//0.0,//14,  //	gG_heritability, (considered idem as marine, Gjerde 1994)
+0.14,  //	gG_heritability, (considered idem as marine, Gjerde 1994)
 20,   // gG_nloci
 
 ////////Growth at sea       65 -->   68
 0.0 ,// gGmeanSea    center of the lognormal -> estimated
 0.2 ,// gGsdSea     small variance at start -> estimated
-0.9,//14,  //	gG_sea_heritability  Gjerde 1994
+0.14,  //	gG_sea_heritability  Gjerde 1994
 20,   // gG_sea_nloci
 
 ////////Smoltification      69 -->  76
@@ -243,7 +245,7 @@ static double colParamDef[]={     //Parameters for setup_collection
 0.15,//alphaS (betasmolt2 in paper) ->Buoro 2008
 0.,  //galphaS_sd             TO SEARCH
 0.0,//2,  //galphaS_heritability
-10,   //galphaS_nloci
+10,   //galphaS_nloci NOT USED
 
 ////////Maturation reaction norms   77 -->  88
 1.250,//Fmid[0] threshold of parr males          TO SEARCH

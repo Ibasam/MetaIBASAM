@@ -212,7 +212,8 @@ double Environment::IWUH(double nb_days)
 	for(unsigned j=index_now;j<index_end;++j)
 	{
 		myassert(exp(logRelativeFlows.at_torus(j))!=0,"zero logarithm problem??");
-		iwuh+=max(1.0,Critical_RelativeFlow_/exp(logRelativeFlows.at_torus(j)));
+	//	iwuh+=max(1.0,Critical_RelativeFlow_/exp(logRelativeFlows.at_torus(j)));
+		iwuh+=max(1.0,Critical_RelativeFlow_/logRelativeFlows.at_torus(j)); // edit mbuoro
 	}
 	iwuh/=nb_days;
 	return(iwuh);
@@ -245,7 +246,8 @@ double Environment::IWUH()
 {
 	unsigned index_now = (unsigned)index_environment_;
 	myassert(exp(logRelativeFlows.at_torus(index_now))!=0.,"zero logarithm problem????");
-	double iwuh=max(1.0,Critical_RelativeFlow_/exp(logRelativeFlows.at_torus(index_now)));
+	//double iwuh=max(1.0,Critical_RelativeFlow_/exp(logRelativeFlows.at_torus(index_now)));
+	double iwuh=max(1.0,Critical_RelativeFlow_/logRelativeFlows.at_torus(index_now)); // edit mbuoro
 	return(iwuh);
 }
 
